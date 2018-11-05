@@ -22,3 +22,4 @@ JAR 文件就是 Java Archive File，顾名思意，它的应用是与 Java 息�
 standard，singleTop，singleTask，singleInstance
 10.Android启动Service的两种方式是什么? 它们的适用情况是什么
 11.java的反射
+12.注册广播有几种方式，这些方式有何优缺点？请谈谈Android引入广播机制的用意
