@@ -24,3 +24,11 @@ standard，singleTop，singleTask，singleInstance
 11.java的反射
 12.注册广播有几种方式，这些方式有何优缺点？请谈谈Android引入广播机制的用意
 13.Android内存泄露
+如果静态变量持有某个Activity的context，则会引发对应Activity无法释放，导致内存泄漏。
+内部类引用导致Activity的泄漏
+Cursor
+性能问题：
+优化布局层次，减少内存消耗 布局优化(include、merge和viewstub标签的使用)
+绘制优化(不要在onDraw方法里面创建新的对象)
+stringbuilder
+listview 性能优化
