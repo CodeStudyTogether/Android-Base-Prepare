@@ -69,3 +69,10 @@ TCP/IP协议
 24.Volley与okhttp和retrofit
 25.7.0，8.0，9.0
 26.volatile和transient
+27.Serializable是Java自带的，而Parcelable是Android加入的。 
+Serializable中为什么要设置UID，设置UID与不设置UID值的区别和影响。
+28.android中的动画有哪几类，它们的特点和区别是什么  
+答：两种，一种是Tween动画、还有一种是Frame动画。Tween动画，这种实现方式可以使视图组件移动、放大、缩小以及产生透明度的变化;另一种Frame动画，传统的动画方法，通过顺序的播放排列好的图片来实现，类似电影。
+29.对称加密和非对称加密
+30.红黑树：红黑树是特殊的二叉查找树，意味着它满足二叉查找树的特征：任意一个节点所包含的键值，大于等于左孩子的键值，小于等于右孩子的键值。
+31.git rebase： git rebase 的黄金法则便是，绝不要在公共的分支上使用它。
