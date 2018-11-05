@@ -32,3 +32,4 @@ Cursor
 绘制优化(不要在onDraw方法里面创建新的对象)
 stringbuilder
 listview 性能优化
+14.Service的onCreate回调在UI线程中吗？在的
