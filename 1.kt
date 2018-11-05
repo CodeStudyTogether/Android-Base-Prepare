@@ -36,3 +36,9 @@ listview 性能优化
 15.AsyncTask和Handler的源码，handlerthread，intentservice
 16.Android中进程间通信有哪些实现方式？原理是什么
 Intent，Binder（AIDL），Messenger，BroadcastReceiver
+Bundle	简单易用	只能传输Bundle支持的数据类型	四大组件间的进程间通信
+文件共享	简单易用	不适合高并发场景,并且无法做到进程间的即时通	无法并发访问情形, 交换简单的数据实时性不高的场景
+AIDL	功能强大	使用稍复杂,需要处理好线程同步	一对多通信且有RPC需求
+ContentProvider	在数据源访问方面功能强大,支持一对多并发数据共享	可以理解为受约束的AIDL,主要提供数据源的CRUD操作	一对多的进程间的数据共享
+Messenger	功能一般, 支持一对多串行通信,支持实时通信	不能很好处理高并发,不支持RPC,数据通过Message进行传输, 因此只能传输Bundle支持的数据类型	低并发的一对多即时通信,无RPC需求,或者无需要返回结果的RPC需求
+Socket	功能强大,可以通过网络传输字节流,支持一对多并发实时通信	实现细节稍微有点繁琐,不支持直接的RPC	网络数据交换
