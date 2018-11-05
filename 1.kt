@@ -8,3 +8,4 @@ JAR 文件就是 Java Archive File，顾名思意，它的应用是与 Java 息�
 封装：
 多态性：
 4.String,StringBuffer,StringBuilder
+在这方面运行速度快慢为：StringBuilder > StringBuffer > String
