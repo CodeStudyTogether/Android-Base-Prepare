@@ -60,3 +60,5 @@ java中创建线程的方式有几种。（三种）
 20.Java中的四种引用以及使用的场景
 21.最近在研究Volley框架的源码，发现它在HTTP请求的使用上比较有意思，在Android 2.3及以上版本，使用的是HttpURLConnection，而在Android 2.2及以下版本，使用的是HttpClient。
 22.http和https，socket和websocket
+TCP协议中的三次握手和四次挥手
+http1与http2的区别
