@@ -57,3 +57,4 @@ TouchEvent最先到达最顶层 view 的 dispatchTouchEvent ，然后由  dispat
 （4）IntentService
 java中创建线程的方式有几种。（三种）
 19.jvm
+20.Java中的四种引用以及使用的场景
