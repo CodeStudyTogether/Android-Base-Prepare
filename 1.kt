@@ -9,3 +9,5 @@ JAR 文件就是 Java Archive File，顾名思意，它的应用是与 Java 息�
 多态性：
 4.String,StringBuffer,StringBuilder
 在这方面运行速度快慢为：StringBuilder > StringBuffer > String
+5.String 为什么要设计成不可变的？
+字符串常量池(String pool, String intern pool, String保留池) 是Java堆内存中一个特殊的存储区域, 当创建一个String对象时,假如此字符串值已经存在于常量池中,则不会创建一个新的对象,而是引用已经存在的对象。
