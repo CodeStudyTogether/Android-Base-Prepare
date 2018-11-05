@@ -62,3 +62,4 @@ java中创建线程的方式有几种。（三种）
 22.http和https，socket和websocket
 TCP协议中的三次握手和四次挥手
 http1与http2的区别
+TCP和UDP
