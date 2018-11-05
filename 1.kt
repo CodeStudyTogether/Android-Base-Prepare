@@ -44,3 +44,4 @@ Messenger	功能一般, 支持一对多串行通信,支持实时通信	不能很
 Socket	功能强大,可以通过网络传输字节流,支持一对多并发实时通信	实现细节稍微有点繁琐,不支持直接的RPC	网络数据交换
 17.Android中touch事件的传递机制是怎样的
 对于一个根ViewGroup来说，点击事件产生后，首先会传递给它，这时它的dispatchTouchEvent就会被调用，如果这个ViewGroup的onInterceptTouchEvent方法返回true就表示它要拦截当前事件，接着事件就会交给这个ViewGroup处理，即它的onTouchEvent方法就会被调用；如果这个ViewGroup的onInterceptTouchEvent方法返回false就表示它不拦截当前事件，这时当前事件就会继续传递给它的子元素，接着子元素的dispatchTouchEvent方法就会被调用，如此反复直到事件被最终处理。
+dispatchTouchEvent() 、onInterceptTouchEvent()和onTouchEvent()
