@@ -21,3 +21,4 @@ JAR 文件就是 Java Archive File，顾名思意，它的应用是与 Java 息�
 9.Activity的四种launchMode
 standard，singleTop，singleTask，singleInstance
 10.Android启动Service的两种方式是什么? 它们的适用情况是什么
+11.java的反射
