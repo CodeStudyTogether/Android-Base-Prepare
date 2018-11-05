@@ -55,3 +55,4 @@ TouchEvent最先到达最顶层 view 的 dispatchTouchEvent ，然后由  dispat
 （2）AsyncTask
 （3）ThreadPoolExecutor
 （4）IntentService
+java中创建线程的方式有几种。（三种）
