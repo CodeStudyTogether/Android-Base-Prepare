@@ -19,3 +19,4 @@ JAR 文件就是 Java Archive File，顾名思意，它的应用是与 Java 息�
 （3）设置Activity的android:configChanges=”orientation|keyboardHidden|screenSize”时，切屏不会重新调用各个生命周期，只会执行onConfigurationChanged方法。
 8.自定义viewgroup和自定义view
 9.Activity的四种launchMode
+standard，singleTop，singleTask，singleInstance
