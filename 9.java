@@ -69,3 +69,6 @@ Model ：负责数据实现和逻辑处理，类似MVP。View ： 对应于Activ
 
 - CardView
 CardView 继承自FrameLayout类，并且可以设置圆角和阴影，使得控件具有立体性，也可以包含其他的布局容器和控件。
+
+- 事件消费机制
+https://www.jianshu.com/p/4e19af8a59cd
