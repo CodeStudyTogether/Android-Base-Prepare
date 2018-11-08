@@ -9,3 +9,8 @@ HashMap中使用键对象来计算hashcode值	HashSet使用成员对象来计算
 HashMap比较快，因为是使用唯一的键来获取对象	HashSet较HashMap来说比较慢
 
 Set的集合里不允许对象有重复的值，List允许有重复，它对集合中的对象进行索引，Queue的工作原理是FCFS算法(First Come, First Serve)。
+
+
+众所周知 HashMap 是一个无序的 Map，因为每次根据 key 的 hashcode 映射到 Entry 数组上，所以遍历出来的顺序并不是写入的顺序。
+因此 JDK 推出一个基于 HashMap 但具有顺序的 LinkedHashMap 来解决有排序需求的场景。
+它的底层是继承于 HashMap 实现的，由一个双向链表所构成。
