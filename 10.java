@@ -33,3 +33,8 @@ Set的集合里不允许对象有重复的值，List允许有重复，它对集�
 锁状态	无法判断	可以判断
 锁类型	可重入 不可中断 非公平	可重入 可判断 可公平（两者皆可）
 性能	少量同步	大量同步
+
+混淆代码后崩溃日志中不显示行号的问题
+-renamesourcefileattribute SourceFile
+-keepattributes SourceFile,LineNumberTable
+
