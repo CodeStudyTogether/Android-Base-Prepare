@@ -51,3 +51,8 @@ ArrayMap则是直接使用System.arraycopy。
 数据量比较小，并且需要频繁的使用Map存储数据的时候，推荐使用ArrayMap。
 
 而数据量比较大的时候，则推荐使用HashMap。
+
+那么使用SparseArray：
+1、如果key的类型已经确定为int类型，那么使用SparseArray，因为它避免了自动装箱的过程，如果key为long类型，它还提供了一个LongSparseArray来确保key为long类型时的使用
+
+2、如果key类型为其它的类型，则使用ArrayMap
