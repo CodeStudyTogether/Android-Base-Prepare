@@ -1,1 +1,3 @@
+在WeakHashMap 中，当某个键不再正常使用时，会被从WeakHashMap 中自动移除。
 
+直接使用HashMap有时候会带来内存溢出的风险，使用WaekHashMap实例化Map。当使用者不再有对象引用的时候，WeakHashMap将自动被移除对应Key值的对象。
