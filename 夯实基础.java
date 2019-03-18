@@ -63,6 +63,19 @@ Service的运行线程（生命周期方法全部在主线程）
 Service启动方式以及如何停止
 ServiceConnection里面的回调方法运行在哪个线程？
 
+黑色保活：不同的app进程，用广播相互唤醒（包括利用系统提供的广播进行唤醒）
+白色保活：启动前台Service
+灰色保活：利用系统的漏洞启动前台Service
+https://www.jianshu.com/p/63aafe3c12af
+START_STICKY
+如果系统在onStartCommand返回后被销毁，系统将会重新创建服务并依次调用onCreate和onStartCommand
+startService开启服务以后，与activity就没有关联，不受影响，独立运行。
+bindService开启服务以后，与activity存在关联，退出activity时必须调用unbindService方法，否则会报ServiceConnection泄漏的错误。
+同一个服务可以用两种方式一同开启，没有先后顺序的要求，MyService的onCreate只会执行一次。
+关闭服务需要stopService和unbindService都被调用，也没有先后顺序的影响，MyService的onDestroy也只执行一次。但是如果只用一种方式关闭服务，不论是哪种关闭方式，onDestroy都不会被执行，服务也不会被关闭。这一点需要注意。
+Service和Activity的连接可以用ServiceConnection来实现。你需要实现一个新的ServiceConnection，重写onServiceConnected和onServiceDisconnected方法，一旦连接建立，你就能得到Service实例的引用。
+ServiceConnection的方法都是进程的主线程中调用的。
+
 什么情况下使用 ViewStub、include、merge？
 他们的原理是什么？
 
