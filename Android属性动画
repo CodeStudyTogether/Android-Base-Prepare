@@ -4,3 +4,16 @@
 
 Google 官方会在 Android 3.0 的时候添加 Property Animation
 
+Tween Animation 存在的问题：
+1
+Tween Animation 只能作用于 View 的属性，不能作用于普通 Object 的属性
+
+2
+Tween Animation 只能改变 View 的一部分属性，如 View 的 BackgroundColor 它就不能改变
+
+3
+Tween Animation 只能改变 View 的“表面”，不能改变 View 的实际属性
+
+优先使用属性动画
+
+Property Animation 的应用场景还是很多的，所有能用 Tween Animation 实现的动画都能通过 Property Animation 实现，另外，大多数的自定义 View 中都有 Property Animation 的身影
