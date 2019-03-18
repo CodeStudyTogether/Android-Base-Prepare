@@ -79,6 +79,14 @@ ServiceConnection的方法都是进程的主线程中调用的。
 什么情况下使用 ViewStub、include、merge？
 他们的原理是什么？
 
+因为merge标签并不是View,所以在通过LayoutInflate.inflate()方法渲染的时候,第二个参数必须指定一个父容器,且第三个参数必须为true,也就是必须为merge下的视图指定一个父亲节点.
+因为merge不是View,所以对merge标签设置的所有属性都是无效的.
+注意如果include的layout用了merge,调用include的根布局也使用了merge标签,那么就失去布局的属性了
+merge标签必须使用在根布局
+ViewStub标签中的layout布局不能使用merge标签
+https://blog.csdn.net/bboyfeiyu/article/details/45869393
+如果本打算用FrameLayout作为界面的根布局时，要用<merge>标签作为根节点，因为View树的ContentView本身就是个FrameLayout
+
 注册方式，优先级
 广播类型，区别
 广播的使用场景，原理
