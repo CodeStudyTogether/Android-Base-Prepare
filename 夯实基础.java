@@ -279,20 +279,77 @@ onDraw方法中不要做耗时的任务
 
 Android MVC、MVP、MVVM
 
+MVVM中跟MVP中一样，将三层划分的很清楚，Activity和xml layout充当View，ViewModel处理业务逻辑以及获取数据，弱化Model。 
+如果项目简单，没什么复杂性，未来改动也不大的话，那就不要用设计模式或者架构方法，只需要将每个模块封装好，方便调用即可，不要为了使用设计模式或架构方法而使用。
+对于偏向展示型的app，绝大多数业务逻辑都在后端，app主要功能就是展示数据，交互等，建议使用mvvm。
+对于工具类或者需要写很多业务逻辑app，使用mvp或者mvvm都可。
+如果想通过一个项目去学习架构和设计模式，建议用MVC然后在此基础上慢慢挖掘改进。最后你可能发现，改进的最终结果可能就变成了mvp，mvvm。
+
 Android Gradle 知识
+Android Studio 使用 Gradle 这一高级构建工具包来自动执行和管理构建流程，同时也允许您定义灵活的自定义构建配置。
+Gradle 和 Android 插件独立于 Android Studio 运行。 这意味着，您可以在 Android Studio 内、计算机上的命令行或未安装 Android Studio 的计算机（例如持续性集成服务器）上构建 Android 应用。 如果您不使用 Android Studio，可以学习如何从命令行构建和运行您的应用。 无论您是从命令行、在远程计算机上还是使用 Android Studio 构建项目，构建的输出都相同。
+一个像 Ant 一样的非常灵活的通用构建工具 
+一种可切换的, 像 maven 一样的基于合约构建的框架 
+支持强大的多工程构建 
+支持强大的依赖管理(基于 ApacheIvy ) 
+支持已有的 maven 和 ivy 仓库 
+支持传递性依赖管理, 而不需要远程仓库或者 pom.xml 或者 ivy 配置文件 
+优先支持 Ant 式的任务和构建 
+基于 groovy 的构建脚本 
+有丰富的领域模型来描述你的构建
+如果你本地安装了Gradle，那么你就可以使用gradle命令来直接构建。如果本地没有安装，那么可以通过gradle wrapper来构建，Linux和MAC使用./gradlew，而Windows上面则使用gradlew，还可以在 gradle/gradle-wrapper.properties 中配置 Gradle 版本。
+Gradle 基于 groovy 语言
+groovy 与 java 相同是基于 jvm
 
 RxJava
 使用过程，特点，原理解析
 
+事件流源头（observable）怎么发出数据
+响应者（subscriber）怎么收到数据
+怎么对事件流进行操作（operator/transformer）
+以及整个过程的调度（scheduler）
+Android 开发中一个比较典型的例子是点击监听器 OnClickListener 。对设置 OnClickListener 来说， View 是被观察者， OnClickListener 是观察者，二者通过 setOnClickListener() 方法达成订阅关系。
+RxJava 有四个基本概念：Observable (可观察者，即被观察者)、 Observer (观察者)、 subscribe (订阅)、事件。
+而 map() 则像一种代理机制，通过事件拦截和处理实现事件序列的变换。
+可以看到Observable中原来的参数是Student对象，而最后我们需要的是name，这里使用了map来实现这一转换的过程。当然，map可以多次使用。
+
 OKHTTP 和 Retrofit
+能支持RxJava
+retrofit的最大特点就是解耦，要解耦就需要大量的设计模式
+Retrofit 的主要原理是利用了 Java 的动态代理技术，把 ApiService 的方法调用集中到了InvocationHandler.invoke,再构建了ServiceMethod ,OKHttpCall，返回 callAdapter.adapt 的结果。
+Retrofit 是一个 RESTful 的 HTTP 网络请求框架的封装。
+网络请求的工作本质上是 OkHttp 完成，而 Retrofit 仅负责 网络请求接口的封装
 
 最流行图片加载库： Glide
+
+那就是会向当前的Activity当中添加一个隐藏的Fragment
+因为Glide需要知道加载的生命周期。很简单的一个道理，如果你在某个Activity上正在加载着一张图片，结果图片还没加载出来，Activity就被用户关掉了，那么图片还应该继续加载吗？当然不应该。可是Glide并没有办法知道Activity的生命周期，于是Glide就使用了添加隐藏Fragment的这种小技巧，因为Fragment的生命周期和Activity是同步的，如果Activity被销毁了，Fragment是可以监听到的，这样Glide就可以捕获这个事件并停止图片加载了。
+Glide内存缓存的实现自然也是使用的LruCache算法。不过除了LruCache算法之外，Glide还结合了一种弱引用的机制，共同完成了内存缓存功能
 
 Android 组件化与插件化
 业务大了代码多了会用到。
 为什么要用组件化？
 组件之间如何通信？
 组件之间如何跳转？
+
+插件化和热修复不是同一个概念，虽然站在技术实现的角度来说，他们都是从系统加载器的角度出发，无论是采用hook方式，亦或是代理方式或者是其他底层实现，都是通过“欺骗”Android 系统的方式来让宿主正常的加载和运行插件
+插件化顾名思义，更多是想把需要实现的模块或功能当做一个独立的提取出来，减少宿主的规模，当需要使用到相应的功能时再去加载相应的模块。热修复则往往是从修复bug的角度出发，强调的是在不需要二次安装应用的前提下修复已知的bug。
+宿主： 就是当前运行的APP
+插件： 相对于插件化技术来说，就是要加载运行的apk类文件
+补丁： 相对于热修复技术来说，就是要加载运行的.patch,.dex,*.apk等一系列包含dex修复内容的文件。
+早期很多应用的动态换肤功能，就是参考了Android 插件化的技术，最早的新浪微博夜间模式就是通过下载一个夜间模式的apk文件完成
+说起热修复就不得不提类的加载机制，和常规的JVM类似，在Android中类的加载也是通过ClassLoader来完成，具体来说就是PathClassLoader 和 DexClassLoader 这两个Android专用的类加载器，这两个类的区别如下：
+PathClassLoader：只能加载已经安装到Android系统中的apk文件（/data/app目录），是Android默认使用的类加载器。
+DexClassLoader：可以加载任意目录下的dex/jar/apk/zip文件，也就是我们一开始提到的补丁。
+这两个类都是继承自BaseDexClassLoader，我们可以看一下BaseDexClassLoader的构造函数。
+这里需要明白的一点是对于一个ClassLoader（类加载器）来说，将一个具体的类（class）加载到内存中其实是由虚拟机完成的，对于开发者来说，我们关注的重点应该是如何去找到这个需要加载的类。
+Tinker的思路是这样的，通过修复好的class.dex 和原有的class.dex比较差生差量包补丁文件patch.dex，在手机上这个patch.dex又会和原有的class.dex 合并生成新的文件fix_class.dex，用这个新的fix_class.dex 整体替换原有的dexPathList的中的内容，可以说是从根本上把bug给干掉了。
+更新模块独立出去，就是组件化
+https://blog.csdn.net/guiying712/article/details/55213884
+VirtualAPK
+一个业务模块实际上并不能轻而易举地独立出来，它们往往都会和宿主有交互
+如果你是要加载一个内部业务模块，并且这个业务模块很难从主工程中解耦，那么VirtualAPK是最好的选择。
+https://github.com/didi/VirtualAPK/wiki
 
 除了上面整理的安卓高级技术问题，还有一些面试官喜欢问的点，大家针对准备回答：
 
