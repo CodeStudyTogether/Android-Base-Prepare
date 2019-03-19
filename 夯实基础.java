@@ -91,12 +91,59 @@ https://blog.csdn.net/bboyfeiyu/article/details/45869393
 广播类型，区别
 广播的使用场景，原理
 
+我们可以在代码中注册（动态注册），也可以AndroidManifest.xml配置文件中注册（静态注册）。
+Normalbroadcasts：默认广播
+orderedbroadcasts：有序广播
+广播接收器注册一共有两种形式：静态注册和动态注册．
+两者及其接收广播的区别：
+（1）动态注册广播不是常驻型广播，也就是说广播跟随Activity的生命周期。注意在Activity结束前，移除广播接收器。
+静态注册是常驻型，也就是说当应用程序关闭后，如果有信息广播来，程序也会被系统调用自动运行。
+（2）当广播为有序广播时：优先级高的先接收（不分静态和动态）。同优先级的广播接收器，动态优先于静态
+（3）同优先级的同类广播接收器，静态：先扫描的优先于后扫描的，动态：先注册的优先于后注册的。
+（4）当广播为默认广播时：无视优先级，动态广播接收器优先于静态广播接收器。同优先级的同类广播接收器，静态：先扫描的优先于后扫描的，动态：先注册的优先于后册的。
+
 AsyncTask是串行还是并行执行？
 AsyncTask随着安卓版本的变迁
+
+1. Params
+在执行AsyncTask时需要传入的参数，可用于在后台任务中使用。
+2. Progress
+后台任务执行时，如果需要在界面上显示当前的进度，则使用这里指定的泛型作为进度单位。
+3. Result
+当任务执行完毕后，如果需要对结果进行返回，则使用这里指定的泛型作为返回值类型。
+AsyncTask也是使用的异步消息处理机制，只是做了非常好的封装而已。
+因此在3.0版本中AsyncTask的改动还是挺大的，在3.0之前的AsyncTask可以同时有5个任务在执行，而3.0之后的AsyncTask同时只能有1个任务在执行。为什么升级之后可以同时执行的任务数反而变少了呢？这是因为更新后的AsyncTask已变得更加灵活，如果不想使用默认的线程池，还可以自由地进行配置。
+AsyncTask内部封装了Thread和Handler，可以让我们在后台进行计算并且把计算的结果及时更新到UI上，而这些正是Thread+Handler所做的事情，没错，AsyncTask的作用就是简化Thread+Handler，让我们能够通过更少的代码来完成一样的功能，这里，我要说明的是：AsyncTask只是简化Thread+Handler而不是替代，实际上它也替代不了。
 
 onTouch和onTouchEvent区别，调用顺序
 dispatchTouchEvent， onTouchEvent， onInterceptTouchEvent 方法顺序以及使用场景
 滑动冲突，如何解决
+
+onTouch是优先于onClick执行的
+onTouch方法是有返回值的，这里我们返回的是false，如果我们尝试把onTouch方法里的返回值改成true,onClick方法不再执行了
+首先你需要知道一点，只要你触摸到了任何一个控件，就一定会调用该控件的dispatchTouchEvent方法。
+mOnTouchListener.onTouch(this, event)，其实也就是去回调控件注册touch事件时的onTouch方法。也就是说如果我们在onTouch方法里返回true，就会让这三个条件全部成立，从而整个方法直接返回true。如果我们在onTouch方法里返回false，就会再去执行onTouchEvent(event)方法。
+这两个方法都是在View的dispatchTouchEvent中调用的，onTouch优先于onTouchEvent执行。如果在onTouch方法中通过返回true将事件消费掉，onTouchEvent将不会再执行。
+MyLinearLayout的dispatchTouchEvent -> MyLinearLayout的onInterceptTouchEvent -> MyButton的dispatchTouchEvent ->Mybutton的onTouchEvent 
+默认是不拦截的，即返回false；如果你需要拦截，只要return true就行了，这要该事件就不会往子View传递了，并且如果你在DOWN retrun true ，则DOWN,MOVE,UP子View都不会捕获事件；如果你在MOVE return true , 则子View在MOVE和UP都不会捕获事件。
+原因很简单，当onInterceptTouchEvent(ev) return true的时候，会把mMotionTarget 置为null ; 
+1、如果ViewGroup找到了能够处理该事件的View，则直接交给子View处理，自己的onTouchEvent不会被触发；
+2、可以通过复写onInterceptTouchEvent(ev)方法，拦截子View的事件（即return true），把事件交给自己处理，则会执行自己对应的onTouchEvent方法
+3、子View可以通过调用getParent().requestDisallowInterceptTouchEvent(true);  阻止ViewGroup对其MOVE或者UP事件进行拦截；
+好了，那么实际应用中能解决哪些问题呢？
+比如你需要写一个类似slidingmenu的左侧隐藏menu，主Activity上有个Button、ListView或者任何可以响应点击的View，你在当前View上死命的滑动，菜单栏也出不来；因为MOVE事件被子View处理了~ 你需要这么做：在ViewGroup的dispatchTouchEvent中判断用户是不是想显示菜单，如果是，则在onInterceptTouchEvent(ev)拦截子View的事件；自己进行处理，这样自己的onTouchEvent就可以顺利展现出菜单栏了~~
+https://www.jianshu.com/p/d3758eef1f72
+讲讲 Android 的事件分发机制？
+基本会遵从 Activity => ViewGroup => View 的顺序进行事件分发，然后通过调用 onTouchEvent() 方法进行事件的处理。我们在项目中一般会对  MotionEvent.ACTION_DOWN，MotionEvent.ACTION_UP，MotionEvent.ACTION_MOVE，MotionEvent.ACTION_CANCEL 分情况进行操作。
+有去查看源码中的事件拦截方法吗？或者说在进行事件分发的时候如何让正常的分发方式进行拦截？
+我知道有个拦截事件的方法叫...叫，onInterceptEvent()？应该是，不过由于平时项目较多，确实没时间去关注太多源码。
+厄，那你觉得在一个列表中，同时对父 View 和子 View 设置点击方法，优先响应哪个？为什么会这样？
+肯定是优先响应子 View 的，至于为什么这样，平时知道这个结论，所以没去太深入研究，但我相信我简单看一下源码是肯定知道的。
+dispatchTouchEvent()
+onTouchEvent()
+onInterceptTouchEvent()
+1、Android 事件分发总是遵循 Activity => ViewGroup => View 的传递顺序；
+2、onTouch() 执行总优先于 onClick()
 
 简述 View 绘制流程
 onMeasure， onlayout， ondraw方法中需要注意的点
