@@ -150,26 +150,118 @@ onMeasure， onlayout， ondraw方法中需要注意的点
 如何进行自定义 View
 view 重绘机制
 
+LayoutInflater其实就是使用Android提供的pull解析方式来解析布局文件的。
+在setContentView()方法中，Android会自动在布局文件的最外层再嵌套一个FrameLayout，所以layout_width和layout_height属性才会有效果。
+onMeasure()、onLayout()和onDraw()
+EXACTLY，AT_MOST和UNSPECIFIED
+约束:AT_MOST(至多)
+布局参数:wrap-content
+约束:EXACTLY(完全)
+布局参数:match_parent/具体宽高值
+View中的onLayout()方法就是一个空方法
+自绘控件
+组合控件
+继承控件
+
 Android Window、Activity、DecorView以及ViewRoot
+
+Activity并不负责视图控制，它只是控制生命周期和处理事件。真正控制视图的是Window。一个Activity包含了一个Window，Window才是真正代表一个窗口。Activity就像一个控制器，统筹视图的添加与显示，以及通过其他回调方法，来与Window、以及View进行交互。
+Window是视图的承载器，内部持有一个 DecorView，而这个DecorView才是 view 的根布局。Window是一个抽象类，实际在Activity中持有的是其子类PhoneWindow。PhoneWindow中有个内部类DecorView，通过创建DecorView来加载Activity中设置的布局R.layout.activity_main。Window 通过WindowManager将DecorView加载其中，并将DecorView交给ViewRoot，进行视图绘制以及其他交互。
+DecorView是FrameLayout的子类，它可以被认为是Android视图树的根节点视图。DecorView作为顶级View，一般情况下它内部包含一个竖直方向的LinearLayout，在这个LinearLayout里面有上下三个部分，上面是个ViewStub,延迟加载的视图（应该是设置ActionBar,根据Theme设置），中间的是标题栏(根据Theme设置，有的布局没有)，下面的是内容栏。
+Activity就像个控制器，不负责视图部分。Window像个承载器，装着内部视图。DecorView就是个顶层视图，是所有View的最外层布局。ViewRoot像个连接器，负责沟通，通过硬件的感知来通知视图，进行用户之间的交互。
 
 常见的 IPC 机制以及使用场景
 为什么安卓要用 binder 进行跨进程传输
 多进程带来的问题
 
+Binder能干什么？Binder可以提供系统中任何程序都可以访问的全局服务。这个功能当然是任何系统都应该提供的，下面我们简单看一下Android的Binder的框架
+Android Binder框架分为服务器接口、Binder驱动、以及客户端接口；简单想一下，需要提供一个全局服务，那么全局服务那端即是服务器接口，任何程序即客户端接口，它们之间通过一个Binder驱动访问。
+服务器端接口：实际上是Binder类的对象，该对象一旦创建，内部则会启动一个隐藏线程，会接收Binder驱动发送的消息，收到消息后，会执行Binder对象中的onTransact()函数，并按照该函数的参数执行不同的服务器端代码。
+Binder驱动：该对象也为Binder类的实例，客户端通过该对象访问远程服务。
+客户端接口：获得Binder驱动，调用其transact()发送消息至服务器
+这些进程间的通信就依赖于 Binder IPC 机制。不仅如此，Android 系统对应用层提供的各种服务如：ActivityManagerService、PackageManagerService 等都是基于 Binder IPC 机制来实现的。Binder 机制在 Android 中的位置非常重要
+Android 系统是基于 Linux 内核的，Linux 已经提供了管道、消息队列、共享内存和 Socket 等 IPC 机制。那为什么 Android 还要提供 Binder 来实现 IPC 呢？主要是基于性能、稳定性和安全性几方面的原因。
+Binder 基于 C/S 架构
+我们都知道，系统为 APP 每个进程分配的内存是有限的，如果想获取更多内存分配，可以使用多进程，将一些看不见的服务、比较独立而又相当占用内存的功能运行在另外一个进程当中。\
+AndroidManifest.xml 清单文件中注册 Activity、Service 等四大组件时，指定 android:process 属性即可开启多进程
+以小写字母开头的，属于全局进程，其他应用可以通过 ShareUID 进行数据共享；
+Application 多次创建
+我们都会在工程中自定义一个 Application 类，做一些全局性的初始化工作，因为我们要区分出来，让其在主进程进行初始化
+静态成员和单例模式失效
+进程间通信
+既然内存不能共享，是不是可以找个共同地方，是的，可以把要共享的数据保存 SD 卡，实现共享。首先将 SingletonUtil 实现 Serializable 序列化，将对象存入 SD 卡，然后需要用的地方，反序列化，从 SD 卡取出对象
+AIDL，Android 接口定义语言，定义客户端与服务端进程间通信，服务端有处理多线程时，才有必要使用 AIDL，不然可以使用 Messenger
+IPC 即 Inter-Process Communication (进程间通信)。
+Android 基于 Linux，而 Linux 出于安全考虑，不同进程间不能之间操作对方的数据，这叫做“进程隔离”。
+只有允许不同应用的客户端用 IPC 方式调用远程方法，并且想要在服务中处理多线程时，才有必要使用 AIDL
+如果需要调用远程方法，但不需要处理并发 IPC，就应该通过实现一个 Binder 创建接口
+如果您想执行 IPC，但只是传递数据，不涉及方法调用，也不需要高并发，就使用 Messenger 来实现接口
+如果需要处理一对多的进程间数据共享（主要是数据的 CRUD），就使用 ContentProvider
+如果要实现一对多的并发实时通信，就使用 Socket
+
 Android 高级必备 ：AMS,WMS,PMS
+
+Android的PackageManagerService，后面简称PMS。PMS用来管理所有的package信息，包括安装、卸载、更新以及解析AndroidManifest.xml以组织相应的数据结构，这些数据结构将会被PMS、ActivityMangerService等等service和application使用到。
+Android的framework层主要是由WMS、AMS还有View所构成，这三个模块穿插交互在整个framework中，掌握了它们之间的关系和每一个逻辑步骤，你对framework的了解至少有百分之五十
+WindowManagerService
+WindowManagerService服务的实现是相当复杂的，毕竟它要管理的整个系统所有窗口的UI，而在任何一个系统中，窗口管理子系统都是极其复杂的。
+ActivityManagerService
+AMS的工作流程，其实就是Activity的启动和调度的过程，所有的启动方式，最终都是通过Binder机制的Client端，调用Server端的AMS的startActivityXXX()系列方法。所以可见，工作流程又包括Client端和Server端两个。
 
 为什么会发生 ANR？
 如何定位 ANR？
 如何避免 ANR？
 
+Application Not Responding
+KeyDispatchTimeout –按键或触摸事件在特定时间内无响应；
+BroadcastTimeout –BroadcastReceiver在特定时间内无法处理完成；
+ServiceTimeout –Service在特定的时间内无法处理完成；
+主线程中存在耗时的计算
+应用在5秒内未响应用户的输入事件（如按键或者触摸）
+BroadcastReceiver未在10秒内完成相关的处理
+Android系统中，ActivityManagerService(简称AMS)和WindowManagerService(简称WMS)会检测App的响应时间，如果App在特定时间无法相应屏幕触摸或键盘输入时间，或者特定事件没有处理完毕，就会出现ANR。
+
 注意：内存泄漏和内存溢出是 2 个概念
 什么情况下会内存泄漏？
 如何防止内存泄漏？
 
+内存溢出是指当对象的内存占用已经超出分配内存的空间大小，这时未经处理的异常就会抛出。比如常见的内存溢出情况有：bitmap过大；引用没释放；资源对象没关闭 
+有些对象只有有限的生命周期。当它们的任务完成之后，它们将被垃圾回收。如果在对象的生命周期本该结束的时候，这个对象还被一系列的引用，这就会导致内存泄漏。随着泄漏的累积，app将消耗完内存。 
+1.资源对象没关闭
+如Cursor，File等资源。他们会在finalize中关闭，但这样效率太低。容易造成内存泄漏 
+SQLiteCurost,当数据量大的时候容易泄漏
+2.使用Adapter时，没有使用系统缓存的converView 
+3.没有即时调用recycle()释放不再使用的bitmap 
+4.使用application的context来替代activity相关的context
+不要让生命周期长于Activity的对象持有到Activity的引用
+5.广播注册没取消造成内存泄露 
+6.Handler应该申明为静态对象， 并在其内部类中保存一个对外部类的弱引用。
+我们可以考虑使用ArrayMap/SparseArray而不是HashMap等传统数据结构
+请避免在Android里面使用到枚举。
+减小Bitmap对象的内存占用
+避免在onDraw方法里面执行对象的创建
+StringBuilder的使用
+资源文件需要选择合适的文件夹进行存放
+我们知道hdpi/xhdpi/xxhdpi等等不同dpi的文件夹下的图片在不同的设备上会经过scale的处理。例如我们只在hdpi的目录下放置了一张100100的图片，那么根据换算关系，xxhdpi的手机去引用那张图片就会被拉伸到200200。需要注意到在这种情况下，内存占用是会显著提高的。对于不希望被拉伸的图片，需要放到assets或者nodpi的目录下。
+优化布局层次，减少内存消耗
+http://hukai.me/android-performance-oom/
+静态内部类不持有外部类的引用，打破了链式引用。
+
 屏幕适配相关名词解析
 现在流行的屏幕适配方式
 
+屏幕尺寸指屏幕的对角线的长度，单位是英寸，1英寸=2.54厘米
+比如常见的屏幕尺寸有2.4、2.8、3.5、3.7、4.2、5.0、5.5、6.0等
+https://zhuanlan.zhihu.com/p/37199709
+面假设设计图宽度是360dp，以宽维度来适配。
+那么适配后的 density = 设备真实宽(单位px) / 360，接下来只需要把我们计算好的 density 在系统中修改下即可，代码实现如下：
+
 LruCache使用极其原理
+关于Android的三级缓存，其中主要的就是内存缓存和硬盘缓存。这两种缓存机制的实现都应用到了LruCache算法，
+因此LruCache的核心思想很好理解，就是要维护一个缓存对象列表，其中对象列表的排列方式是按照访问顺序实现的，即一直没访问的对象，将放在队尾，即将被淘汰。而最近访问的对象将放在队头，最后被淘汰。
+LRU(Least Recently Used)缓存算法便应运而生，LRU是近期最少使用的算法，它的核心思想是当缓存满时，会优先淘汰那些近期最少使用的缓存对象。采用LRU算法的缓存有两种：LrhCache和DisLruCache，分别用于实现内存缓存和硬盘缓存，其核心思想都是LRU缓存算法。
+而LinkedHashMap是由数组+双向链表的数据结构来实现的。其中双向链表的结构可以实现访问顺序和插入顺序，使得LinkedHashMap中的<key,value>对按照一定顺序排列起来。
+Glide也使用了LruCache
 
 如何进行 内存 cpu 耗电 的定位以及优化
 性能优化经常使用的方法
