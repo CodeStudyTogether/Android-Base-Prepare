@@ -267,6 +267,16 @@ Glide也使用了LruCache
 性能优化经常使用的方法
 如何避免 UI 卡顿
 
+代码优化，在ide中显示是灰色的可省略的
+布局优化
+如果父控件有颜色，也是自己需要的颜色，那么就不必在子控件加背景颜色
+如果每个自控件的颜色不太一样，而且可以完全覆盖父控件，那么就不需要再父控件上加背景颜色
+尽量减少不必要的嵌套
+能用LinearLayout和FrameLayout，就不要用RelativeLayout，因为RelativeLayout控件相对比较复杂，测绘也想要耗时。
+include、merge和ViewStub
+onDraw中不要创建新的局部对象
+onDraw方法中不要做耗时的任务
+
 Android MVC、MVP、MVVM
 
 Android Gradle 知识
