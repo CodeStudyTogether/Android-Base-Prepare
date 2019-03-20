@@ -1,4 +1,5 @@
 https://www.jianshu.com/p/0f82b0650909
+https://zhuanlan.zhihu.com/p/59738065
 
 App中唤醒其他进程的实现方式
 进程保活的方式
