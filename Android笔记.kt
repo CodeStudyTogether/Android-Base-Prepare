@@ -108,3 +108,33 @@ Object类的equal和hashCode方法重写，为什么？
 说起equals方法，我们都知道是超类Object中的一个基本方法，用于检测一个对象是否与另外一个对象相等。而在Object类中这个方法实际上是判断两个对象是否具有相同的引用，如果有，它们就一定相等。
 public boolean equals(Object obj) {   return (this == obj);     }
 默认情况下也就是从超类Object继承而来的equals方法与‘==’是完全等价的，比较的都是对象的内存地址，但我们可以重写equals方法，使其按照我们的需求的方式进行比较，如String类重写了equals方法，使其比较的是字符的序列，而不再是内存地址。
+
+java中Map,List与Set的区别
+List是有序的Collection
+Map没有继承Collection接口，Map提供key到value的映射
+Set是一种不包含重复的元素的Collection
+
+ConcurrentHashMap 的实现原理
+HashMap 是非线程安全的，当我们只有一个线程在使用 HashMap 的时候，自然不会有问题，但如果涉及到多个线程，并且有读有写的过程中，HashMap 就不能满足我们的需要了(fail-fast)。在不考虑性能问题的时候，我们的解决方案有 Hashtable 
+ConcurrentHashMap 的结构是比较复杂的，都深究去本质，其实也就是数组和链表而已。
+HashTable的锁加在整个Hash表上，而ConcurrentHashMap将锁加在segment上（每个段上），这样我们在对segment1操作的时候，同时也可以对segment2中的数据操作，这样效率就会高很多。
+
+HashMap与ArrayMap
+
+HashTable实现原理
+
+Hashtable与HashMap都是用来存储key-value类型数据的，两者有如下区别：
+1、Hashtable不允许null key和null value，HashMap允许。
+2、Hashtable是线程安全的，HashMap不是线程安全的。
+3、HashMap的迭代器(Iterator)是fail-fast迭代器，而Hashtable的enumerator迭代器不是fail-fast的。所以当有其它线程改变了HashMap的结构（增加或者移除元素），将会抛出ConcurrentModificationException，但迭代器本身的remove()方法移除元素则不会抛出ConcurrentModificationException异常。但这并不是一个一定发生的行为，要看JVM。这条同样也是Enumeration和Iterator的区别。
+4、Hashtable继承自Dictionary，HashMap继承自AbstractMap。
+5、两者都实现了Map接口。
+
+TreeMap是一个通过红黑树实现有序的key-value集合。
+
+HashMap实现了Map接口	HashSet实现了Set接口
+HashMap储存键值对	HashSet仅仅存储对象
+使用put()方法将元素放入map中	使用add()方法将元素放入set中
+HashMap中使用键对象来计算hashcode值	HashSet使用成员对象来计算hashcode值，对于两个对象来说hashcode可能相同，所以equals()方法用来判断对象的相等性，如果两个对象不同的话，那么返回false
+HashMap比较快，因为是使用唯一的键来获取对象	HashSet较HashMap来说比较慢
+
