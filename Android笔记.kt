@@ -74,3 +74,10 @@ hashCode也是Object类的一个方法。返回一个离散的int型整数。在
 一个字节等于8个bit
 https://blog.csdn.net/nyistzp/article/details/12029917
 
+Ingeter是int的包装类，int的初值为0，Ingeter的初值为null。
+
+多态的实现的必要条件：继承，重写，父类引用指向子类对象（即，声明是父类，实际指向的是子类的一个对象）
+
+String 不可变，因此是线程安全的
+StringBuilder 不是线程安全的
+StringBuffer 是线程安全的，内部使用 synchronized 进行同步
