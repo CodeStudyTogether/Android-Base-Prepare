@@ -31,3 +31,17 @@ Android中，一个应用程序的开始可以说就是从ActivityThread.java中
 初始化主线程的Looper、主Handler。并使主线程进入等待接收Message消息的无限循环状态。
 ActivityManagerService调度发送初始化消息
 https://juejin.im/entry/58f5b68e61ff4b005807ab47
+
+对Dalvik、ART虚拟机有什么了解？
+我们写的所有的 Java 代码最终都会被编译器编译为以 .class 结尾的字节码文件，然后最终被 Java 虚拟机执行，从而得到我们想要的结果。
+首先 Java 虚拟机是一个规范，由 Sun 公司制定，任何实现该规范的虚拟机都可以用来执行 Java 代码。
+由于 Androd 运行在移动设备上，内存以及电量等诸多方面跟一般的 PC 设备都有本质的区别 ，一般的 JVM 没法满足移动设备的要求，所以在开发 Android 过程中，Android 团队一开始就必须打造一个符合移动设备的可以执行 Java 代码的虚拟机。
+这就是我们说的 Dalvik 虚拟机 。
+Dalvik 是一个更符合移动设备的用于执行 Java 代码的虚拟机，但又不是一个严格按照 JVM 规范的虚拟机实现
+JVM 可以执行的文件是 .class 结尾的字节码文件，而 Dalvik 执行的是 dex 文件。
+为什么 Dalvik 执行 dex 文件而不是 .class 文件，其实这里是 Android 专为 Dalvik 虚拟机做的一个优化。
+Dalvik 基于寄存器，而 JVM 基于栈，很明显，基于寄存器的 Dalvik 在速度方面优势会更明显。
+从 Android L 开始，Android 开始启用了新设计的虚拟机 ART。与 Dalvik 不同，在Dalvik下，应用每次运行的时候，字节码都需要通过即时编译器（Just In Time ，JIT）转换为本地机器码，这会拖慢应用的运行效率。
+而在ART 环境中，应用在第一次安装的时候，会使用设备上的dex2oat工具进行字节码转码，把字节码预先编译成本地机器码，使其成为真正的本地应用。这个过程叫做预编译（Ahead-Of-Time，AOT）。
+采用 AOT 策略后的好处显而易见，应用的启动速度会因此快很多，但是与此同时，应用的安装时间就会因为执行 AOT 操作而变长，但是相比之下还是非常值得。
+另外，ART的另一个缺点就是对存储空间占用变大。一般的字节码在编译转码后占用的空间大小比之前要增大10%-20%。
