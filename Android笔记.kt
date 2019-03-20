@@ -58,3 +58,19 @@ JVM初始运行的时候都会分配好Method Area（方法区）和Heap（堆�
 
 垃圾回收只负责回收堆内存中的对象。
 你可以调用System.gc()或者Runtime.getRuntime().gc()来建议JVM进行GC
+
+==是运算符，用于比较两个变量是否相等。
+
+equals，是Objec类的方法，用于比较两个对象是否相等，默认Object类的equals方法是比较两个对象的地址，跟==的结果一样。Object的equals方法如下：
+    public boolean equals(Object obj) {
+        return (this == obj);
+    }
+hashCode也是Object类的一个方法。返回一个离散的int型整数。在集合类操作中使用，为了提高查询速度。（HashMap，HashSet等）
+如果两个对象根据equals()方法比较是相等的，那么调用这两个对象中任意一个对象的hashCode方法都必须产生同样的整数结果。
+如果两个对象根据equals()方法比较是不相等的，那么调用这两个对象中任意一个对象的hashCode方法，则不一定要产生相同的整数结果
+覆盖equals时总要覆盖hashCode 
+一个很常见的错误根源在于没有覆盖hashCode方法。在每个覆盖了equals方法的类中，也必须覆盖hashCode方法。
+
+一个字节等于8个bit
+https://blog.csdn.net/nyistzp/article/details/12029917
+
