@@ -167,3 +167,55 @@ volatile关键字
 保证了不同线程对这个变量进行操作时的可见性，即一个线程修改了某个变量的值，这新值对其他线程来说是立即可见的。
 
 标准的IO基于字节流和字符流进行操作的，而NIO是基于通道(Channel)和缓冲区(Buffer)进行操作，数据总是从通道读取到缓冲区中，或者从缓冲区写入通道也类似。
+
+synchronized 和volatile 关键字的区别
+1.volatile仅能使用在变量级别；  synchronized则可以使用在变量、方法、和类级别的
+2.volatile仅能实现变量的修改可见性，并不能保证原子性；synchronized则可以保证变量的修改可见性和原子性
+3.volatile不会造成线程的阻塞； synchronized可能会造成线程的阻塞。
+4.volatile标记的变量不会被编译器优化；synchronized标记的变量可以被编译器优化
+
+synchronized和ReentrantLock都是可重入锁，可重入性在我看来实际上表明了锁的分配机制：基于线程的分配，而不是基于方法调用的分配。举比如说，当一个线程执行到method1 的synchronized方法时，而在method1中会调用另外一个synchronized方法method2，此时该线程不必重新去申请锁，而是可以直接执行方法method2。
+读写锁将对一个资源的访问分成了2个锁，如文件，一个读锁和一个写锁。正因为有了读写锁，才使得多个线程之间的读操作不会发生冲突。ReadWriteLock就是读写锁，它是一个接口，ReentrantReadWriteLock实现了这个接口。可以通过readLock()获取读锁，通过writeLock()获取写锁。
+可中断锁，即可以中断的锁。在Java中，synchronized就不是可中断锁，而Lock是可中断锁。
+如果某一线程A正在执行锁中的代码，另一线程B正在等待获取该锁，可能由于等待时间过长，线程B不想等待了，想先处理其他事情，我们可以让它中断自己或者在别的线程中中断它，这种就是可中断锁。
+公平锁即尽量以请求锁的顺序来获取锁。同时有多个线程在等待一个锁，当这个锁被释放时，等待时间最久的线程（最先请求的线程）会获得该锁，这种就是公平锁。
+非公平锁即无法保证锁的获取是按照请求锁的顺序进行的，这样就可能导致某个或者一些线程永远获取不到锁。
+synchronized是非公平锁，它无法保证等待的线程获取锁的顺序。对于ReentrantLock和ReentrantReadWriteLock，默认情况下是非公平锁，但是可以设置为公平锁。
+https://juejin.im/post/5a43ad786fb9a0450909cb5f
+Lock是一个接口，而synchronized是Java中的关键字，synchronized是内置的语言实现；
+synchronized在发生异常时，会自动释放线程占有的锁，因此不会导致死锁现象发生；而Lock在发生异常时，如果没有主动通过unLock()去释放锁，则很可能造成死锁现象，因此使用Lock时需要在finally块中释放锁；
+Lock可以让等待锁的线程响应中断，而synchronized却不行，使用synchronized时，等待的线程会一直等待下去，不能够响应中断；
+通过Lock可以知道有没有成功获取锁，而synchronized却无法办到。
+Lock可以提高多个线程进行读操作的效率。（可以通过readwritelock实现读写分离）
+性能上来说，在资源竞争不激烈的情形下，Lock性能稍微比synchronized差点（编译程序通常会尽可能的进行优化synchronized）。但是当同步非常激烈的时候，synchronized的性能一下子能下降好几十倍。而ReentrantLock确还能维持常态。
+ReentrantLock在功能上更加丰富，它具有可重入、可中断、可限时、公平锁
+
+横竖屏切换：
+1、不设置Activity的android:configChanges时，切屏会重新调用各个生命周期，切横屏时会执行一次，切竖屏时会执行两次
+2、设置Activity的android:configChanges="orientation"时，切屏还是会重新调用各个生命周期，切横、竖屏时只会执行一次
+3、设置Activity的android:configChanges="orientation|keyboardHidden"时，切屏不会重新调用各个生命周期，只会执行onConfigurationChanged方法
+
+invalidate和postInvalidate的区别及使用
+invalidate()得在UI线程中被调动，在工作者线程中可以通过Handler来通知UI线程进行界面更新。
+而postInvalidate()在工作者线程中被调用
+
+SparseArray 的使用及实现原理
+使用int[]数组存放key，避免了HashMap中基本数据类型需要装箱的步骤，其次不使用额外的结构体（Entry)，单个元素的存储成本下降
+
+IntentService原理及作用是什么？
+要执行耗时任务，就得在Service里面开子线程来执行。那么，有没有一种简单的方法来处理这个过程呢，答案就是IntentService。
+IntentService是继承于Service并处理异步请求的一个类，在IntentService内有一个工作线程来处理耗时操作，启动IntentService的方式和启动传统Service一样，同时，当任务执行完后，IntentService会自动停止，而不需要我们去手动控制。另外，可以启动IntentService多次，而每一个耗时操作会以工作队列的方式在IntentService的onHandleIntent回调方法中执行，并且，每次只会执行一个工作线程，执行完第一个再执行第二个，以此类推。
+
+HandlerThread
+HandlerThread继承自Thread，它本质上就是一个Thread，而且专门用来处理Handler的消息。
+不熟悉多线程开发的人一想到要使用线程，可能就用new Thread(){…}.start()这样的方式。实质上在只有单个耗时任务时用这种方式是可以的，但若是有多个耗时任务要串行执行呢？那不得要多次创建多次销毁线程，这样导致的代价是很耗系统资源，容易存在性能问题。
+HandlerThread比较适用于单线程+异步队列的场景，比如IO读写操作数据库、文件等，耗时不多而且也不会产生较大的阻塞。对于网络IO操作，HandlerThread并不适合，因为它只有一个线程，还得排队一个一个等着。
+它就是一个帮我们创建 Looper 的线程，让我们可以直接在线程中使用 Handler 来处理异步任务。
+
+ThreadLocal原理，实现及如何保证Local属性
+当需要使用多线程时，有个变量恰巧不需要共享，此时就不必使用synchronized这么麻烦的关键字来锁住，每个线程都相当于在堆内存中开辟一个空间，线程中带有对共享变量的缓冲区，通过缓冲区将堆内存中的共享变量进行读取和操作，ThreadLocal相当于线程内的内存，一个局部变量。每次可以对线程自身的数据读取和操作，并不需要通过缓冲区与 主内存中的变量进行交互。并不会像synchronized那样修改主内存的数据，再将主内存的数据复制到线程内的工作内存。ThreadLocal可以让线程独占资源，存储于线程内部，避免线程堵塞造成CPU吞吐下降。
+在每个Thread中包含一个ThreadLocalMap，ThreadLocalMap的key是ThreadLocal的对象，value是独享数据。
+
+请解释安卓为啥要加签名机制?
+同一个应用如果签名不同则不能覆盖安装
+然后用户如果之前安装过官方版本的QQ就会发现“签名不一致”的提示
