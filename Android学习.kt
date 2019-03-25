@@ -1,0 +1,61 @@
+软引用跟弱引用的区别
+软引用：如果一个对象只具有软引用，则内存空间充足时，垃圾回收器就不会回收它；如果内存空间不足了，就会回收这些对象的内存。只要垃圾回收器没有回收它，该对象就可以一直被程序使用。
+弱引用：如果一个对象只具有弱引用，那么在垃圾回收器线程扫描的过程中，一旦发现了只具有弱引用的对象，不管当前内存空间足够与否，都会回收它的内存。
+两者之间根本区别在于：只具有弱引用的对象拥有更短暂的生命周期，可能随时被回收。而只具有软引用的对象只有当内存不够的时候才被回收，在内存足够的时候，通常不被回收。
+
+为什么系统不建议在子线程访问UI？
+Android的UI控件不是线程安全的，如果在多线程中并发访问可能会导致UI控件处于不可预期的状态
+这时你可能会问为何系统不对UI控件的访问加上锁机制呢？因为
+加锁机制会让UI访问逻辑变的复杂
+加锁机制会降低UI的访问效率,因为加锁会阻塞某些线程的执行
+
+Message可以如何创建？哪种效果更好，为什么？
+参考回答：可以通过三种方法创建：
+直接生成实例Message m = new Message
+通过Message m = Message.obtain
+通过Message m = mHandler.obtainMessage()
+后两者效果更好，因为Android默认的消息池中消息数量是10，而后两者是直接在消息池中取出一个Message实例，这样做就可以避免多生成Message实例。
+
+线程池的好处？ 四种线程池的使用场景，线程池的几个参数的理解？
+使用线程池的好处是减少在创建和销毁线程上所花的时间以及系统资源的开销，解决资源不足的问题。如果不使用线程池，有可能造成系统创建大量同类线程而导致消耗完内存或则“过度切换”的问题，归纳总结就是
+重用存在的线程，减少对象创建、消亡的开销，性能佳。
+可有效控制最大并发线程数，提高系统资源的使用率，同时避免过多资源竞争，避免堵塞。
+提供定时执行、定期执行、单线程、并发数控制等功能。
+Android中的线程池都是直接或间接通过配置ThreadPoolExecutor来实现不同特性的线程池.Android中最常见的类具有不同特性的线程池分别为：
+newCachedThreadPool：只有非核心线程，最大线程数非常大，所有线程都活动时会为新任务创建新线程,否则会利用空闲线程 ( 60s空闲时间,过了就会被回收,所以线程池中有0个线程的可能 )来处理任务.
+优点：任何任务都会被立即执行(任务队列SynchronousQuue相当于一个空集合);比较适合执行大量的耗时较少的任务.
+newFixedThreadPool：只有核心线程，并且数量固定的，所有线程都活动时，因为队列没有限制大小，新任务会等待执行，当线程池空闲时不会释放工作线程，还会占用一定的系统资源。
+优点：更快的响应外界请求
+newScheduledThreadPool：核心线程数固定,非核心线程（闲着没活干会被立即回收数）没有限制.
+优点：执行定时任务以及有固定周期的重复任务
+newSingleThreadExecutor：只有一个核心线程,确保所有的任务都在同一线程中按序完成
+优点：不需要处理线程同步的问题
+涉及到多线程的时候想想能不能用线程池，或者handlerthread
+
+Android中还了解哪些方便线程切换的类？
+AsyncTask：底层封装了线程池和Handler，便于执行后台任务以及在子线程中进行UI操作。
+HandlerThread：一种具有消息循环的线程，其内部可使用Handler。
+IntentService：是一种异步、会自动停止的服务，内部采用HandlerThread。
+
+讲讲AsyncTask的原理
+AsyncTask中有两个线程池（SerialExecutor和THREAD_POOL_EXECUTOR）和一个Handler（InternalHandler），其中线程池SerialExecutor用于任务的排队，而线程池THREAD_POOL_EXECUTOR用于真正地执行任务，InternalHandler用于将执行环境从线程池切换到主线程。
+sHandler是一个静态的Handler对象，为了能够将执行环境切换到主线程，这就要求sHandler这个对象必须在主线程创建。由于静态成员会在加载类的时候进行初始化，因此这就变相要求AsyncTask的类必须在主线程中加载，否则同一个进程中的AsyncTask都将无法正常工作。
+
+IntentService有什么用
+IntentService可用于执行后台耗时的任务，当任务执行完成后会自动停止，同时由于IntentService是服务的原因，不同于普通Service，IntentService可自动创建子线程来执行任务，这导致它的优先级比单纯的线程要高，不容易被系统杀死，所以IntentService比较适合执行一些高优先级的后台任务。
+
+HandlerThread：一个继承自Thread的类HandlerThread，Android中没有对Java中的Thread进行任何封装，而是提供了一个继承自Thread的类HandlerThread类，这个类对Java的Thread做了很多便利的封装。HandlerThread继承于Thread，所以它本质就是个Thread。与普通Thread的差别就在于，它在内部直接实现了Looper的实现，这是Handler消息机制必不可少的。有了自己的looper，可以让我们在自己的线程中分发和处理消息。如果不用HandlerThread的话，需要手动去调用Looper.prepare()和Looper.loop()这些方法。
+
+ThreadLocal的原理
+ThreadLocal是一个关于创建线程局部变量的类。使用场景如下所示：
+实现单个线程单例以及单个线程上下文信息存储，比如交易id等。
+实现线程安全，非线程安全的对象使用ThreadLocal之后就会变得线程安全，因为每个线程都会有一个对应的实例。 承载一些线程相关的数据，避免在方法中来回传递参数。
+当需要使用多线程时，有个变量恰巧不需要共享，此时就不必使用synchronized这么麻烦的关键字来锁住，每个线程都相当于在堆内存中开辟一个空间，线程中带有对共享变量的缓冲区，通过缓冲区将堆内存中的共享变量进行读取和操作，ThreadLocal相当于线程内的内存，一个局部变量。每次可以对线程自身的数据读取和操作，并不需要通过缓冲区与 主内存中的变量进行交互。并不会像synchronized那样修改主内存的数据，再将主内存的数据复制到线程内的工作内存。ThreadLocal可以让线程独占资源，存储于线程内部，避免线程堵塞造成CPU吞吐下降。
+在每个Thread中包含一个ThreadLocalMap，ThreadLocalMap的key是ThreadLocal的对象，value是独享数据。
+
+多线程中,让你做一个单例,你会怎么做
+饿汉，懒汉(线程安全，线程非安全)，双重检查(DCL),内部类，以及枚举
+
+在不影响层级深度的情况下,使用LinearLayout和FrameLayout而不是RelativeLayout。
+
+https://juejin.im/post/5c85cead5188257c6703af47
