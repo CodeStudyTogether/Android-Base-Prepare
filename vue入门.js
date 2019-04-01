@@ -99,3 +99,15 @@ HTML对换行不敏感，对tab不敏感
 https://github.com/qianguyihao/Web/blob/master/01-html/01-html%E6%A0%87%E7%AD%BE%E5%9B%BE%E6%96%87%E8%AF%A6%E8%A7%A3%EF%BC%88%E4%B8%80%EF%BC%89.md
 https://github.com/qianguyihao/Web/tree/master/01-html
 https://github.com/qianguyihao/Web
+
+div和span是非常重要的标签，div的语义是division“分割”； span的语义就是span“范围、跨度”。
+
+CSS课程中你将知道，这两个东西，都是最最重要的“盒子”。
+
+div：把标签中的内容作为一个块儿来对待(division)。必须单独占据一行。
+
+<span>和<div>唯一的区别在于：<span>是不换行的，而<div>是换行的。
+    
+span里面是放置小元素的，div里面放置大东西的。
+
+标题使用<h1>至<h6>标签进行定义。<h1>定义最大的标题，<h6>定义最小的标题。
