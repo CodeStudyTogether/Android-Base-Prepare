@@ -66,3 +66,15 @@ vetur 插件
   data: { // data属性中，存放的是el中要用到的数据,这里的data就是MVVM中的M专门用来保存每个页面的数据
 
 VS Code 本来是前端人员专用，但由于它实在是太好用了，于是，各种开发方向的码农也正在用 VS Code 作为他们的主力编程工具。甚至是一些写作的同学，也把 VS Code 作为 markdown 写作工具。
+
+VS Code 的全称是 Visual Studio Code，是一款开源的、免费的、高性能的、跨平台的、轻量级的代码编辑器。它在性能、语言支持、开源社区方面，都做的很不错。
+
+IDE和编辑器是有区别的：
+
+IDE ：对代码会有较好的智能提示，同时侧重于工程项目，对项目的开发、调试工作有较好的图像化界面的支持，因此比较笨重。比如 Eclipse 的定位就是 IDE。
+
+编辑器：要相对轻量许多，侧重于文本的编辑。比如 Sublime Text 的定位就是编辑器。再比如 Windows 系统自带的「记事本」就是最简单的编辑器。
+
+需要注意的是，VS Code 的定位是编辑器，而非IDE。
+
+https://github.com/qianguyihao/Web/blob/master/00-%E5%89%8D%E7%AB%AF%E5%B7%A5%E5%85%B7/06-chrome%E6%B5%8F%E8%A7%88%E5%99%A8.md
