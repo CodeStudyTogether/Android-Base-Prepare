@@ -95,3 +95,7 @@ UTF-8(Unicode Transform Format)编码： 根据字符的不同，选择其编码
 HTML不区分大小写
 
 HTML对换行不敏感，对tab不敏感
+
+https://github.com/qianguyihao/Web/blob/master/01-html/01-html%E6%A0%87%E7%AD%BE%E5%9B%BE%E6%96%87%E8%AF%A6%E8%A7%A3%EF%BC%88%E4%B8%80%EF%BC%89.md
+https://github.com/qianguyihao/Web/tree/master/01-html
+https://github.com/qianguyihao/Web
