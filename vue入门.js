@@ -64,3 +64,5 @@ https://juejin.im/post/5c9d682d5188251c550be56a 教程
 
 vetur 插件
   data: { // data属性中，存放的是el中要用到的数据,这里的data就是MVVM中的M专门用来保存每个页面的数据
+
+VS Code 本来是前端人员专用，但由于它实在是太好用了，于是，各种开发方向的码农也正在用 VS Code 作为他们的主力编程工具。甚至是一些写作的同学，也把 VS Code 作为 markdown 写作工具。
