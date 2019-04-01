@@ -78,3 +78,8 @@ IDE ：对代码会有较好的智能提示，同时侧重于工程项目，对�
 需要注意的是，VS Code 的定位是编辑器，而非IDE。
 
 https://github.com/qianguyihao/Web/blob/master/00-%E5%89%8D%E7%AB%AF%E5%B7%A5%E5%85%B7/06-chrome%E6%B5%8F%E8%A7%88%E5%99%A8.md
+
+排版标签：<p>     <div>     <span>``<br>     <hr>     <center>     <pre>
+字体标记：<h1>    <font>    <b>    <u>    <sup>    <sub>
+  
+结构：html。表现：css。行为：JavaScript。
