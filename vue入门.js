@@ -83,3 +83,15 @@ https://github.com/qianguyihao/Web/blob/master/00-%E5%89%8D%E7%AB%AF%E5%B7%A5%E5
 字体标记：<h1>    <font>    <b>    <u>    <sup>    <sub>
   
 结构：html。表现：css。行为：JavaScript。
+
+HTML语言不是一个编程语言(有编译过程)，而是一个标记语言(没有编译过程)，HTML页面直接由浏览器解析执行。
+
+XHTML：Extensible Hypertext Markup Language，可扩展超文本标注语言。 XHTML的主要目的是为了取代HTML，也可以理解为HTML的升级版。 HTML的标记书写很不规范，会造成其它的设备(ipad、手机、电视等)无法正常显示。 XHTML与HTML4.0的标记基本上一样。 XHTML是严格的、纯净的HTML。
+ 
+dhtml：dynamic，动态的。javascript + css + html合起来的页面就是一个dhtml。
+    
+UTF-8(Unicode Transform Format)编码： 根据字符的不同，选择其编码的长度。比如：一个字符A用1个字节表示，一个汉字用2个字节表示。
+
+HTML不区分大小写
+
+HTML对换行不敏感，对tab不敏感
