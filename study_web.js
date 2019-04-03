@@ -22,3 +22,18 @@ window.localStorage 本地存储：
 （2）容量较大，sessionStorage 约5M、localStorage 约20M。
 
 （3）只能存储字符串，可以将对象 JSON.stringify() 编码后存储。
+
+收集几个流量大的网站(必须是vue做的)页面交互和逻辑尽可能复杂多样
+对比一下各个页面的seo是如何做的
+网站中出现率做多的公共组件或者公共方法是什么
+
+vue-develop这个插件，只要你安装了这个插件，是vue的网站该插件的图标就会点亮 
+
+高流量vue网站
+1） www.bilibili.com （bilibili） 
+2） m.sohu.com （手机搜狐网） 
+3） juejin.im/timeline （掘金） 
+4） element.eleme.io/#/en-US （element） 
+5） classics.autotrader.com （New&Used Classic Car for sale） 
+6） qiqu.uc.cn （奇趣百科） 
+7） m.uhouzz.com/apartments （异乡好居）
