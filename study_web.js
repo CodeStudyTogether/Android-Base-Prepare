@@ -37,3 +37,5 @@ vue-develop这个插件，只要你安装了这个插件，是vue的网站该插
 5） classics.autotrader.com （New&Used Classic Car for sale） 
 6） qiqu.uc.cn （奇趣百科） 
 7） m.uhouzz.com/apartments （异乡好居）
+
+构建工具的功能主要是：进行代码转换、文件压缩、代码分割、模块合并、自动刷新、代码检验、自动发布等功能。
