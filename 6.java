@@ -18,3 +18,5 @@ for(int i=0;i<a.length-1;i++){
 有些程序员没听过索引是什么，有些从前辈那里得知索引可以加快查询但对原理却不甚了解，掌握这些常用技巧背后的理论知识才能做到合理使用，比如为什么我们不对表的每一个field都建立索引呢？理解索引是通过「新建表」配合「B+树」来实现快速查询的，就能很好明白索引这项利器的优和劣。索引也是我面试时的必问问题之一。
 
 用注解去封装eventbus https://blog.csdn.net/jiashuai94/article/details/79725755
+
+RoundedBitmapDrawable 是 Android 版本 22.1.0 的时候加入的，它的主要作用是创建圆角的 Drawable。
