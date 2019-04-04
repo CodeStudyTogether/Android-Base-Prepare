@@ -21,3 +21,25 @@ service +broadcast 方式，就是当service走ondestory的时候，发送一个
 （5）监听系统广播判断Service状态。
 通过系统的一些广播，比如：手机重启、界面唤醒、应用状态改变等等监听并捕获到，然后判断我们的Service是否还存活。
 （6）Application加上Persistent属性。
+
+Jetpack是一个类库(libraries)、工具(tools)、帮助快易开发构建令人满意的Android App的指导(architectural guidance)集合，它提供了通用的基础代码(code)，这样你可以专注于让你app与众不同的工作。
+
+快速开发
+组件可单独使用，也可以同时工作，当使用kotlin语言特性时，可以让你更有效率
+消除样板代码
+Android Jetpack管理乏味的活动，例如后台任务、导航和生命周期管理，你可以专注于让你的app更棒的东西。
+构建高质量、健壮的app
+基于现代设计实践，Android Jetpack组件可以减少崩溃和内存泄漏，且向后兼容。
+
+Foundation Components
+包含核心系统能力、Kotlin扩展、混合dex(multidex)和测试自动化支持的组件
+4大模块：AppCompat,Android KTX,Multidex,Test
+Architecture Components
+一个类库的集合，可以帮助你设计健壮、可测、可维护的app。主要为管理UI Components生命周期和处理数据持久化。
+8大模块：Data Binding,Lifecycles,LiveData,Navigation,Paging,Room,ViewModel,WorkManager
+Behavior Components
+一个类库的集合，用于帮助你设计健壮、可测、可维护的app。主要为管理UI Components生命周期和处理数据持久化。
+6大模块:DownloadManager,Media&Palyback,Notifications,Permissions,Sharing,Slices
+UI Components
+不仅仅是更容易，更乐于使用的构建app的类库
+8大模块：Animations and Transitions,Auto(汽车),Emoji,Fragment,Layout,Palette,TV,WearOS
