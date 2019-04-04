@@ -20,3 +20,7 @@ for(int i=0;i<a.length-1;i++){
 用注解去封装eventbus https://blog.csdn.net/jiashuai94/article/details/79725755
 
 RoundedBitmapDrawable 是 Android 版本 22.1.0 的时候加入的，它的主要作用是创建圆角的 Drawable。
+
+Android 开发过程中，Model 层通常是比较薄弱的。获取数据的代码经过各种优秀的封装，已经可以简化到短短几行代码，对于简单的项目而言，全都写在 Activity/Fragment 中就是最合适的了，如果使用了 MVP 或者 MVVM 模式，也基本会把数据的获取放在 Presenter/ViewModel 中。（后面用业务逻辑层表示 Controller/Presenter/ViewModel）
+
+Android Q:Wifi 模式选择（high performance / low latency）
