@@ -24,3 +24,5 @@ RoundedBitmapDrawable 是 Android 版本 22.1.0 的时候加入的，它的主�
 Android 开发过程中，Model 层通常是比较薄弱的。获取数据的代码经过各种优秀的封装，已经可以简化到短短几行代码，对于简单的项目而言，全都写在 Activity/Fragment 中就是最合适的了，如果使用了 MVP 或者 MVVM 模式，也基本会把数据的获取放在 Presenter/ViewModel 中。（后面用业务逻辑层表示 Controller/Presenter/ViewModel）
 
 Android Q:Wifi 模式选择（high performance / low latency）
+
+https://juejin.im/post/5c9f3027f265da30c90269b4
