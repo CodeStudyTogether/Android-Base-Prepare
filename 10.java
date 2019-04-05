@@ -38,3 +38,5 @@ Set的集合里不允许对象有重复的值，List允许有重复，它对集�
 -renamesourcefileattribute SourceFile
 -keepattributes SourceFile,LineNumberTable
 
+对于存在透明通道的图片, 使用 ARGB_8888 保证图片不会丢失透明通道
+对于无透明通道图片, 使用 RGB_565 保证图片内存占用量最低
