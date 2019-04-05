@@ -72,3 +72,83 @@ CardView 继承自FrameLayout类，并且可以设置圆角和阴影，使得控
 
 - 事件消费机制
 https://www.jianshu.com/p/4e19af8a59cd
+
+通过一次流程分析我们得知, 整个 Glide 图片加载主要有如下几步
+
+请求管理器的构建
+
+一个 Context 对应一个 RequestManager
+
+
+请求的构建
+
+请求的宽高、采样的方式、transform 变化...
+
+
+通过请求获取资源
+
+Engine 从内存缓存中查找
+
+从 ActiveResources 缓存中查找
+从 LruResourceCache 缓存中查找
+
+
+内存缓存不存在, 则构建任务执行
+
+构建一个 EngineJob 描述一个请求任务, 任务类型为 DecodeJob
+
+DecodeJob 从 diskCache 中查找
+diskCache 不存在, 则通过网络请求, 获取数据源
+通过 Downsampler 解析源数据并进行采样压缩获取 Bitmap
+对 Bitmap 进行 transform 处理
+
+构建磁盘缓存的 key
+
+
+将 transform  之后的 Bitmap 转为 Resource 回传给上层
+
+DecodeJob 进行磁盘缓存
+
+
+
+
+
+
+Engine 对资源进行内存缓存
+
+
+传递给 View 进行展示
+
+Glide:https://juejin.im/post/5ca5c7f7e51d45430235ba03
+
+构建线程池
+
+根据不同的任务特性, 构建了不同的线程池
+
+
+构建内存缓存策略
+
+内存计算器
+LRU 算法
+
+
+构建对象复用池
+构建工厂类
+
+创建了一个 RequestManagerRetriever 对象
+
+
+构建 Glide 执行引擎
+
+用于组织线程池和缓存
+
+
+创建 Glide 对象
+
+将 GlideBuilder 中的数据导入
+构建一个 registry, 注册了众多的编解码器
+构建了一个 GlideContext 对象, 描述其数据资源的上下文
+
+
+
+从 Glide 构造的流程中, 可以看到它主要有五个核心部分, 线程池, 内存缓存策略, 对象复用策略和图片音视频的编解码
