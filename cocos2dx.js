@@ -30,3 +30,5 @@ TypeScript 是 JavaScript 的超集，.js 文件可以直接重命名为 .ts 即
 
 https://ts.xcatliu.com/introduction/get-typescript.html
 https://www.liaoxuefeng.com/wiki/001434446689867b27157e896e74d51a89c25cc8b43bdb3000/00143449917624134f5c4695b524e81a581ab5a222b05ec000
+
+不可以用Word或写字板来编写JavaScript或HTML，因为带格式的文本保存后不是纯文本文件，无法被浏览器正常读取。也尽量不要用记事本编写，它会自作聪明地在保存UTF-8格式文本时添加BOM头。
