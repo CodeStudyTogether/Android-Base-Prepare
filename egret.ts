@@ -23,3 +23,19 @@ null：表示空值，即此处的值为空。
 
 https://wangdoc.com/javascript/types/null-undefined-boolean.html
 https://ts.xcatliu.com/introduction/get-typescript.html
+
+变量a分别被赋值为undefined和null，这两种写法的效果几乎等价。
+
+在if语句中，它们都会被自动转为false，相等运算符（==）甚至直接报告两者相等。
+  
+var print = function(s) {
+  console.log(s);
+};
+  
+函数参数如果是原始类型的值（数值、字符串、布尔值），传递方式是传值传递（passes by value）。这意味着，在函数体内修改参数值，不会影响到函数外部。
+
+外层函数每次运行，都会生成一个新的闭包，而这个闭包又会保留外层函数的内部变量，所以内存消耗很大。因此不能滥用闭包，否则会造成网页的性能问题。
+
+https://wangdoc.com/javascript/types/array.html
+  
+https://ts.xcatliu.com/introduction/get-typescript.html
