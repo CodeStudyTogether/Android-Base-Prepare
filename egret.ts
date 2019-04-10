@@ -97,3 +97,26 @@ Cookie 是服务器保存在浏览器的一小段文本信息，每个 Cookie �
 
 1995年，同源政策由 Netscape 公司引入浏览器。目前，所有浏览器都实行这个政策。
 
+TypeScript 最大的优势便是增强了编辑器和 IDE 的功能，包括代码补全、接口提示、跳转到定义、重构等。
+
+主流的编辑器都支持 TypeScript，这里我推荐使用 Visual Studio Code。
+
+它是一款开源，跨终端的轻量级编辑器，内置了 TypeScript 支持。
+
+另外它本身也是用 TypeScript 编写的。
+
+TypeScript 只会进行静态检查，如果发现有错误，编译的时候就会报错。
+
+TypeScript 编译的时候即使报错了，还是会生成编译结果，我们仍然可以使用这个编译之后的文件。
+
+如果要在报错的时候终止 js 文件的生成，可以在 tsconfig.json 中配置 noEmitOnError 即可。关于 tsconfig.json
+  
+如果定义的时候没有赋值，不管之后有没有赋值，都会被推断成 any 类型而完全不被类型检查：
+
+目前 TypeScript 的代码检查主要有两个方案：使用 TSLint 或使用 ESLint + typescript-eslint-parser。
+  
+JavaScript是前端开发的核心语言，但是这门语言天生就存在很多的问题，比如变量提升，不支持类型认证，难以理解的面向对象。
+
+接口的概念，是之前的JavaScript不具备的，它代表了一个类，必须对某些属性或者方法进行实现。
+
+TypeScript也在积极拥抱ES6的变化，它的发展也在根据JavaScript的语法的演变而进化。
