@@ -59,3 +59,11 @@ ThreadLocal是一个关于创建线程局部变量的类。使用场景如下所
 在不影响层级深度的情况下,使用LinearLayout和FrameLayout而不是RelativeLayout。
 
 https://juejin.im/post/5c85cead5188257c6703af47
+
+由上可见，Presenter中持有View接口对象，这个接口对象实际为MainActivity.this，Modle中也同时拥有Presenter对象实例，当MainActivity要销毁时，Presenter中有Modle在获取数据，那么问题来了，这个Activity还能正常销毁吗？ 
+答案是不能！ 
+当Modle在获取数据时，不做处理，它就一直持有Presenter对象，而Presenter对象又持有Activity对象，这条GC链不剪断，Activity就无法被完整回收。 
+换句话说：Presenter不销毁，Activity就无法正常被回收。
+Presenter在Activity的onDestroy方法回调时执行资源释放操作，或者在Presenter引用View对象时使用更加容易回收的软引用，弱应用。 
+因为面向MVP接口编程，可适应需求变更，所以MVP适用于比较大的项目；因为其简化了Activity和Fragmnt的职责，可大大减少View层的代码量，比起MVC中Activity，Fragment动不动上千行的代码量，简直优雅！
+由于Presenter经常性地需要执行一些耗时的操作，例如，我们经常使用的网络请求数据。当 Presenter 持有了 Activity 的强引用，如果在请求结束之前，Activity 被销毁了，那么由于网络请求还没有返回，导致 Presenter 一直持有 Activity 对象的引用，使得该对象无法被系统回收，此时就发生了内存泄露。
