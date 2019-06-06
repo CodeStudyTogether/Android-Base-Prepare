@@ -112,3 +112,14 @@ Recycler首先去一级缓存（Cache）里面查找是否命中，如果命中�
 RecyclerView缓存基本上是通过三个内部类管理的，Recycler、RecycledViewPool和ViewCacheExtension。
 Recyclerview的四级缓存
 https://zhooker.github.io/2017/08/14/%E5%85%B3%E4%BA%8ERecyclerview%E7%9A%84%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6%E7%9A%84%E7%90%86%E8%A7%A3/
+
+When表达式
+可以使用该表达式来替换switch语句
+等式：
+===：比较两个变量的地址
+==：根据类型的equals方法返回相应的结果
+val：只读变量，可以之后初始化，不过如果未初始化之前该变量无法使用，编译器会报错，编译成字节码的时候编译器应该会做优化，不建议之后初始化，什么时候用到什么时候定义。
+Var：可变（略）
+访问修饰符（默认public）
+Kotlin 空安全(null-safety)
+默认声明的变量是不能为 null 的，如果要使变量能为 null， 需要添加 ?
