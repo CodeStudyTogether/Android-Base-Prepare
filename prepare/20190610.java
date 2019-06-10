@@ -6,4 +6,10 @@ Fragment调用Activity方法利用getActivity()
   
 为什么使用binder
 比Linux的跨进程通信性能好
-安全 身份校验，androi的权限模型的基础
+安全 身份校验，android的权限模型的基础
+
+对于普通方法的同步，锁是当前实例对象。
+对于静态方法的同步，锁是当前类的Class对象。
+对于同步方法块，锁是Synchronized括号里配置的对象。
+
+volatile是轻量级的synchronized,它在多处理器开发中保证了共享变量的可见性。对一个volatile变量的读，总是能看到任意线程对这个volatile变量最后的写入，对单个volatile变量的读写具有原子性。就是说，线程对volatile变量本地内存的写入会被更新到主内存，其他线程对同个volatile的读取，会先将本地的设为无效，必须从主内存中读取。
