@@ -16,3 +16,12 @@ volatile是轻量级的synchronized,它在多处理器开发中保证了共享�
 
 Java中的synchronized同步块是可重入的。这意味着如果一个java线程进入了代码中的synchronized同步块，并因此获得了该同步块使用的同步对象对应的管程上的锁，那么这个线程可以进入由同一个管程对象所同步的另一个java代码块。
 https://zhuanlan.zhihu.com/p/27798985
+
+主要是在Activity的&onDestroy方法中，手动调用 GC，然后利用ReferenceQueue+WeakReference，来判断是否有释放不掉的引用，然后结合dump memory的hpof文件, 用HaHa分析出泄漏地方。
+LeakCanary会单独开一进程，用来执行分析任务，和监听任务分开处理。
+在每个Activity的OnDestroy()方法中都会回调refWatcher.watch()方法
+1，用ActivityLifecycleCallbacks接口来检测Activity生命周期
+2，WeakReference + ReferenceQueue 来监听对象回收情况
+3，Apolication中可通过processName判断是否是任务执行进程
+4，MessageQueue中加入一个IdleHandler来得到主线程空闲回调
+5，LeakCanary检测只针对Activiy里的相关对象。其他类无法使用
