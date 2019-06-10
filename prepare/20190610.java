@@ -13,3 +13,6 @@ Fragment调用Activity方法利用getActivity()
 对于同步方法块，锁是Synchronized括号里配置的对象。
 
 volatile是轻量级的synchronized,它在多处理器开发中保证了共享变量的可见性。对一个volatile变量的读，总是能看到任意线程对这个volatile变量最后的写入，对单个volatile变量的读写具有原子性。就是说，线程对volatile变量本地内存的写入会被更新到主内存，其他线程对同个volatile的读取，会先将本地的设为无效，必须从主内存中读取。
+
+Java中的synchronized同步块是可重入的。这意味着如果一个java线程进入了代码中的synchronized同步块，并因此获得了该同步块使用的同步对象对应的管程上的锁，那么这个线程可以进入由同一个管程对象所同步的另一个java代码块。
+https://zhuanlan.zhihu.com/p/27798985
