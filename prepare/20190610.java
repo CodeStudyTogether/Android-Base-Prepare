@@ -1,1 +1,9 @@
+android中使用栈的方式来管理其中的Activity，后进先出的数据结构
 
+android中scheme是一种页面内跳转协议，通过自定义scheme协议，可以非常方便的跳转app中的各个页面。
+
+Fragment调用Activity方法利用getActivity()
+  
+为什么使用binder
+比Linux的跨进程通信性能好
+安全 身份校验，androi的权限模型的基础
