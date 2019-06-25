@@ -53,3 +53,5 @@ https://juejin.im/post/5d10c9626fb9a07ec63b20ee
 至于 TIME_WAIT 持续的时间至少是一个报文的来回时间。一般会设置一个计时，如果过了这个计时没有再次收到 FIN 报文，则代表对方成功就是 ACK 报文，此时处于 CLOSED 状态。
 
 每次从MainActivity退出程序时总会报InputMethodManager内存泄漏，原因系统中的InputMethodManager持有当前MainActivity的引用，导致了MainActivity不能被系统回收，从而导致了MainActivity的内存泄漏。查了很多资料，发现这是 Android SDK中输入法的一个Bug，在15<=API<=23中都存在，目前Google还没有解决这个Bug。
+
+https://juejin.im/entry/5955e7166fb9a06bc23a8598
