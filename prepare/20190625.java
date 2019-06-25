@@ -51,3 +51,5 @@ https://juejin.im/post/5d10c9626fb9a07ec63b20ee
 为什么客户端发送 ACK 之后不直接关闭，而是要等一阵子才关闭。这其中的原因就是，要确保服务器是否已经收到了我们的 ACK 报文，如果没有收到的话，服务器会重新发 FIN 报文给客户端，客户端再次收到 FIN 报文之后，就知道之前的 ACK 报文丢失了，然后再次发送 ACK 报文。
 
 至于 TIME_WAIT 持续的时间至少是一个报文的来回时间。一般会设置一个计时，如果过了这个计时没有再次收到 FIN 报文，则代表对方成功就是 ACK 报文，此时处于 CLOSED 状态。
+
+每次从MainActivity退出程序时总会报InputMethodManager内存泄漏，原因系统中的InputMethodManager持有当前MainActivity的引用，导致了MainActivity不能被系统回收，从而导致了MainActivity的内存泄漏。查了很多资料，发现这是 Android SDK中输入法的一个Bug，在15<=API<=23中都存在，目前Google还没有解决这个Bug。
