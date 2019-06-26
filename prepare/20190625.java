@@ -55,3 +55,6 @@ https://juejin.im/post/5d10c9626fb9a07ec63b20ee
 每次从MainActivity退出程序时总会报InputMethodManager内存泄漏，原因系统中的InputMethodManager持有当前MainActivity的引用，导致了MainActivity不能被系统回收，从而导致了MainActivity的内存泄漏。查了很多资料，发现这是 Android SDK中输入法的一个Bug，在15<=API<=23中都存在，目前Google还没有解决这个Bug。
 
 https://juejin.im/entry/5955e7166fb9a06bc23a8598
+
+mvp无非 model(数据)、view(界面)、presenter(逻辑)。model对应本地持久化或远程服务端数据，而在笔者看来其实就是对应一个bean对象，然而这个bean对象由远程服务器或本地持久化而得到，因而此层需封装网络请求和本地持久化；view对应activity、fragment以及它们对应的xml布局文件，这层只负责做ui显示；presenter对应逻辑处理层，所做的事情很多，包括网络请求操作、读取缓存数据操作、算法计算等等。
+http://www.androidchina.net/8195.html
