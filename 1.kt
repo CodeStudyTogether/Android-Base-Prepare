@@ -1,3 +1,5 @@
+Kotlin 是一个基于 JVM 的新的编程语言，由 JetBrains 开发。JetBrains，作为目前广受欢迎的 Java IDE IntelliJ 的提供商，在 Apache 许可下已经开源其Kotlin 编程语言。
+
 1.mipmap和drawable的区别
 android 通过 mipmap 技术提前对按缩小层级生成图片预先存储在内存中，这样就提高了图片渲染的速度和质量。
 2.jar和aar的区别
