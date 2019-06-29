@@ -35,3 +35,41 @@ AlertDialog、Notification源码中使用了Builder（建造者）模式完成�
 日常开发的BaseActivity抽象工厂模式
 
 所以可以通过static内部类+弱引用进行处理。由于本例是通过Retrofit进行，还可以在onDestory进行call.cancel进行取消任务，也可以避免内存泄漏。
+
+继承系统控件View，例如：TextView、ImageView等
+继承系统ViewGroup，例如LinearLayout、FrameLayout等（一般指自定义组合控件）
+继承View，重写onMeasure()、onDraw()等，纯自己测量绘制
+继承ViewGroup，重写onMeasure()、onLayout()，纯自己测量布局
+
+Android 中的异步操作基本都是使用 Java 语言内置的，唯一的简单封装的异步类 AsyncTask 有几个主要回调
+
+作者在封装 AsyncTask 这个类时多个任务是在一个后台线程中串行执行的，后来才意识到这样效率太低了就从 Android 1.6（API Level 4）开始改成并行执行了，但是从 Android 3.0（API Level 11）开始又改成默认串行执行了，Google 给的解释是为了避免并行执行可能带来的错误？？？如果你一定要并行执行，需要使用 executeOnExecutor() 方法并使用类似 AsyncTask.THREAD_POOL_EXECUTOR 这样的线程池去执行任务。
+
+总结 AsyncTask初始化了一些参数，并用这些参数实例化了一个线程池THREAD_POOL_EXECUTOR，需要注意的是该线程池被定义为public static final，由此我们可以看出AsyncTask内部维护了一个静态的线程池，默认情况下，AsyncTask的实际工作就是通过该THREAD_POOL_EXECUTOR完成的。
+
+总的来说AsyncTask的内部封装了SERIAL_EXECUTOR（排队线程池），THREAD_POOL_EXECUTOR（执行线程池），以WorkerRunnable为子线程封装可回调控制操作的FutureTask子线程，以及用于更新界面的一个内部InternalHandler
+
+至少在Android-23 SDK里面，多个AsyncTask对象是串行执行的。
+
+然后调用AsyncTask的executeOnExecutor，把自己的MyThreadPoolExecutor对象传进去，达到自己想要的效果。
+不过，还是推荐使用系统默认的，也就是排队执行的方式，除非有特殊需求，我们才搞特殊化处理。
+
+在Android3.0之前执行的时间是一样的，在Android3.0之后每个执行时间相差2秒
+
+系统为了帮助开发者简化线程的切换问题，很人性化的提供了轻量级的AsyncTask。
+
+AsyncTask作为一种轻量级的异步任务类，在Android开发过程中颇受开发者的喜爱。使用AsyncTaskNike 以在线程池中之行后台任务，并把之行的进度和最终结果传递给UI线程做进一步的操作。
+
+AsyncTask作为一种轻量级的异步任务类，在Android开发过程中颇受开发者的喜爱。使用AsyncTaskNike 以在线程池中之行后台任务，并把之行的进度和最终结果传递给UI线程做进一步的操作。
+
+大家都知道AsyncTask是一个抽象类，一般我们继承AsyncTask来创建我们的AsyncTask，而创建的时候我们需要提供三个泛型参数（～～||我怀疑我是不是在瞎逼逼了），
+这三个泛型参数跟AsyncTask关系不浅哦。
+1、Params：表示我们在调用execute方法时传递的参数类型
+2、progress：表示后台任务的执行进度类型
+3、Result：表示后台任务的返回结果类型。
+
+AsyncTask执行execute方法时在Android1.6之前串行；Android1.6之后并行；Android3.0后串行
+
+通过上面代码，我们知道，在执行AsyncTask的execute方法时，我们的线程默认是放入一个ArrayQueue队列中串行的执行的。也就是sDefaultExecutor是一个串行的执行器，所以我们的AsyncTask默认是串行自行的。
+
+我们前面分析了，串行还是并行，关键是执行器。因为默认传入的是sDefaultExecutor，sDefaultExecutor是个串行的执行器，所以我们传入一个并行的执行器，是不是就可以了呢？
