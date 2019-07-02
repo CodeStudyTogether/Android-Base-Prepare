@@ -168,3 +168,101 @@ git rebase --continue
 （如果第三步无效可以执行  git rebase --skip）
 
 https://www.cnblogs.com/xueweihan/p/5743327.html
+
+在任务众多的情况下，系统要为每一个任务创建一个线程，而任务执行完毕后会销毁每一个线程，所以会造成线程频繁地创建与销毁。
+
+多个线程频繁地创建会占用大量的资源，并且在资源竞争的时候就容易出现问题，同时这么多的线程缺乏一个统一的管理，容易造成界面的卡顿。
+
+多个线程频繁地销毁，会频繁地调用GC机制，这会使性能降低，又非常耗时。
+
+对多个线程进行统一地管理，避免资源竞争中出现的问题。
+
+线程进行复用，线程在执行完任务后不会立刻销毁，而会等待另外的任务，这样就不会频繁地创建、销毁线程和调用GC。
+
+JAVA提供了一套完整的ExecutorService线程池创建的api，可创建多种功能不一的线程池，使用起来很方便。
+
+FixedThreadPool 
+CachedThreadPool 
+SingleThreadPool
+核心线程 ：固定线程数 可闲置 不会被销毁 ThreadPoolExecutor的allowCoreThreadTimeOut属性设置为true时，keepAliveTime同样会作用于核心线程
+非核心线程数：非核心线程闲置时的超时时长，超过这个时长，非核心线程就会被回收
+
+Xposed框架的技术核心建立在Jvm原生的JNI机制之上
+Xposed框架核心思想在于将java层普通函数注册成本地JNI方法，以此来变相实现hook机制
+•创建新应用，获取包名等信息。
+•调用XC_LoadPackage.callAll，依次执行各hook模块的代码。
+•如果有包名匹配的hook模块，则注册模块中要hook的方法为本地方法。
+•当该方被调用的时候，转移到本地xposedCallHandler。
+•xposedCallHandler回调上层handlerHookedMethod(因为加载的hook模块代码，一些变量都存储在java层)。
+•handlerHookedMethod执行加载的各hook模块。
+
+理论上我们的插件APP可以hook到系统任意一个Java进程zygote、
+在Android系统中，应用程序进程以及系统服务进程SystemServer都是由Zygote进程孵化出来的，而Zygote进程是由Init进程启动的，Zygote进程在启动时会创建一个Dalvik虚拟机实例，每当它孵化一个新的应用程序进程时，都会将这个Dalvik虚拟机实例复制到新的应用程序进程里面去，从而使得每一个应用程序进程都有一个独立的Dalvik虚拟机实例，这也是Xposed选择替换app_process的原因。
+
+OkHttp 现在统治了Android的网络请求领域，最常用的框架是：Retrofit+okhttp。
+因为在项目中所有的网络请求基本都是异步的，同步很少用到
+可以看出都实现了Interceptor接口，这是okhttp最核心的部分，采用责任链的模式来使每个功能分开，每个Interceptor自行完成自己的任务，并且将不属于自己的任务交给下一个，简化了各自的责任和逻辑。
+责任链这样实现的好处了，当责任链执行完毕，如果拦截器想要拿到最终的数据做其他的逻辑处理等
+OkhttpClient 实现了Call.Fctory,负责为Request 创建 Call；
+RealCall 为Call的具体实现，其enqueue() 异步请求接口通过Dispatcher()调度器利用ExcutorService实现，而最终进行网络请求时和同步的execute()接口一致，都是通过 getResponseWithInterceptorChain() 函数实现
+getResponseWithInterceptorChain() 中利用 Interceptor 链条，责任链模式 分层实现缓存、透明压缩、网络 IO 等功能；最终将响应数据返回给用户。
+
+过@Subscribe注解,来确定运行的线程threadMode,是否接受粘性事件sticky以及事件优先级priority,而且方法名不在需要onEvent开头,所以又简洁灵活了不少.
+这里就是设计模式里我们常用的单例模式了,目的是为了保证getDefault()得到的都是同一个实例。如果不存在实例,就调用了EventBus的构造方法:
+在3.0版本中,EventBus提供了一个EventBusAnnotationProcessor注解处理器来在编译期通过读取@Subscribe()注解并解析,处理其中所包含的信息,然后生成java类来保存所有订阅者关于订阅的信息,
+观察者模式观察者模式是对象的行为模式，又叫发布-订阅(Publish/Subscribe)模式
+Sticky Events（粘性事件）
+https://juejin.im/post/5a3b8fe15188252103346d1b
+
+Tinker做了对应的DexDiff、ResDiff、BsDiff来产出一个patch.apk,里面具体内容也是由lib、res和dex文件组成，assets中还有对应的dex、res和so信息
+然后Tinker通过找到基准包data/app/packagename/base.apk通过DexPatch合成新的dex，并且合成一个tinker_classN.apk(其实就是包含了所有合成dex的zip包)接着在运行时通过反射把这个合成dex文件插入到PathClassLoader中的dexElements数组的前面，保证类加载时优先加载补丁dex中的class。
+Android里面加载类主要用到了两个类加载器，一个是PathClassLoader，另一个是DexClassLoader，应用程序中的类一般都是通过PathClassLoader来加载类的，不信你在Activity里面调用getClassLoader()方法，然后看得到的ClassLoader对象的类型是不是PathClassLoader类型，答案是肯定的。我们来看下PathClassLoader类的源码
+然后apk下次启动的时候就可以把修复好的dex插入dexElements数组的前面，这样应用程序通过PathClassLoader去加载类就会优先找到修复好的dex里面的Test类，这样bug就被修复了。
+
+Retrofit 是一个 RESTful 的 HTTP 网络请求框架的封装。
+原因：网络请求的工作本质上是 OkHttp 完成，而 Retrofit 仅负责 网络请求接口的封装
+只是Retrofit通过使用大量的设计模式进行功能模块的解耦，使得上面的过程进行得更加简单 & 流畅
+Retrofit实例是使用建造者模式通过Builder类进行创建的
+Retrofit是通过外观模式 & 代理模式 使用create（）方法创建网络请求接口的实例
+Retrofit对象的外观（门店） =  retrofit.create()
+静态代理：代理类在程序运行前已经存在的代理方式
+动态代理：代理类在程序运行前不存在、运行时由程序动态生成的代理方式
+用动态代理 的方式，动态将网络请求接口的注解 解析 成HTTP请求
+
+就目前开发角度而言，retrofit可以说是最火的网络框架。其原因我认为有两点，第一：可以和okhttp结合。第二：可以和rxjava结合。也就是说Retrofit 除了提供了传统的 Callback 形式的 API，还有 RxJava 版本的 Observable 形式 API。
+
+简单说就是先用流来读写json字符串，
+而后就是用TyperAdapter作为适配器，完成json字符串和java对象的转换。
+通过自定义TyperAdapter可以解决一切转换异常。
+
+LruCache
+最近最少使用的算法
+LinkedHashMap
+当缓存不足时优先删除最近最少使用的元素
+
+但是这种方式多多少少会有性能的损耗。那么有没有一种方法能解决这种性能的损耗呢？ 没错，答案肯定是有的，那就是Butterknife用的APT(Annotation Processing Tool)编译时解析技术。
+动态生成绑定事件或者控件的java代码，然后在运行的时候，直接调用bind方法完成绑定。
+编译的时候生成代码
+
+原来这个json文件的内容不是手写的，而是软件生成的，设计师可以使用Adobe的 After Effects(简称 AE)工具制作这个动画，在AE中安装一个叫做Bodymovin的插件，使用这个插件可以将动画效果生成一个json文件，而这个json文件通过LottieAnimationView解析并最终生成绚丽的动画效果展示在我们面前。
+LottieAnimationView 使用 LottieDrawable 来渲染动画，动画的实际执行者是 LottieDrawable。
+根据里面的数据建立合适的Drawable绘制到View上面。
+
+LeakCanary的原理非常简单。正常情况下一个Activity在执行Destroy之后就要销毁
+LeakCanary做的就是在一个Activity Destroy之后将它放在一个WeakReference中，然后将这个WeakReference关联到一个ReferenceQueue，查看ReferenceQueue是否存在Activity的引用，如果不在这个队列中，执行一些GC清洗操作，再次查看。如果不存在则证明该Activity泄漏了，之后Dump出heap信息，并用haha这个开源库去分析泄漏路径。
+它向 application 里注册了一个 ActivitylifecycleCallbacks 的回调函数，可以用来监听 Application 整个生命周期所有 Activity
+原来它只监听了所有 Activity 的 onActivityDestroyed 事件，当 Activity 被 Destory 时，调用 ActivityRefWatcher.this.onActivityDestroyed(activity); 函数。
+每个activity申明弱引用的时候都会有个ID, ID保存在retainedKeys集合中, 首先遍历移除被gc回收的对象, 如果这个时候retainedKeys集合为空, 则表示不存在内存泄漏的情况. 否则手动执行GC, 再次判断移除, 这个时候如果retainedKeys内仍存在ID, 则说明有内存泄漏的情况存在.
+通过application注册ActivityLifecycleCallbacks的回调, 在每个activity销毁的时候, 将activity的弱引用包装绑定在ReferenceQueue上, 当GC的时候, 可以通过queue移除已被回收的activity对象key, 获得始终未被回收的对象, 判断为是内存泄漏, 根据haha库解析heap dumps,获取引用路径最终在DisplayLeakActivity上显示我们熟悉的内存泄漏的列表内容.
+  
+通过对 Volley 源码的分析，可以发现， Volley 框架的拆装性很强，框架默认使用的是 HttpUrlConnection 和 HttpClient 来实现网络请求
+CacheDispatcher：一个线程，用于调度处理走缓存的请求。启动后会不断从缓存请求队列中取请求处理，队列为空则等待，请求处理结束则将结果传递给ResponseDelivery去执行后续处理。当结果未缓存过、缓存失效或缓存需要刷新的情况下，该请求都需要重新进入NetworkDispatcher去调度处理。
+NetworkDispatcher：一个线程，用于调度处理走网络的请求。启动后会不断从网络请求队列中取请求处理，队列为空则等待，请求处理结束则将结果传递给ResponseDelivery去执行后续处理，并判断结果是否要进行缓存。
+start 方法中，开启一个缓存调度线程CacheDispatcher和 n 个网络调度线程NetworkDispatcher
+
+② 内存缓存：缓存搜索，如果能找到Key值对应的Bitmap，则返回数据。否则执行第三步。
+③ 硬盘存储：使用唯一Key值对应的文件名，检索SDCard上的文件。
+内存缓存其实就是利用Map接口的对象在内存中进行缓存，可能有不同的存储机制。磁盘缓存其实就是将文件写入磁盘。
+UIL加载图片的一般流程是先判断内存中是否有对应的Bitmap，再判断磁盘（disk）中是否有，如果没有就从网络中加载。
+多线程下载图片，图片可以来源于网络，文件系统，项目文件夹assets中以及drawable中等
+较好的控制图片的加载过程，例如暂停图片加载，重新开始加载图片，一般使用在ListView,GridView中，滑动过程中暂停加载图片，停止滑动的时候去加载图片
