@@ -15,3 +15,21 @@ HTTP2的请求的TCP的connection一旦建立，后续请求以stream的方式�
 3）请求头HEADERS Frame组成了resquest，返回头HEADERS Frame和DATA Frame组成了response，request和response组成了一个stream。
 
 HTTP2采用多路复用是指，在同一个域名下，开启一个TCP的connection，每个请求以stream的方式传输，每个stream有唯一标识，connection一旦建立，后续的请求都可以复用这个connection并且可以同时发送，server端可以根据stream的唯一标识来相应对应的请求。
+
+oncreate onstart onresume onpause onstop ondestroy
+
+onattach oncreate oncreateview onActivityCreated onStart onResume onpuase onstop onDestroyView onDestroy onDetach
+
+activity从不可见状态到可见状态，onRestart才会被调用
+
+1.前台进程 (Foreground process)
+2.可见进程 (Visible process)
+3.服务进程 (Service process)
+4.后台进程 (Background process)
+5.空进程 (Empty process)
+  
+配好START_STICKY后，通过android studio 释放进程的工具测试下，可以发现:remote进程被kill之后马上重启了
+https://juejin.im/post/5baedde6f265da0a8d369eb2
+使用”1像素“的Activity覆盖在getWindow()的view上、循环播放无声音频
+推送互相唤醒复活：极光、友盟、以及各大厂商的推送
+https://tocreate.app/2019/02/20/AOSProcessPrio/index.html
