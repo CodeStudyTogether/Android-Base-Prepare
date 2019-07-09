@@ -20,3 +20,21 @@
 		
 		return pre;
 	}
+
+
+public ListNode ReverseList(ListNode head){
+		if(head == null)
+			return null;
+		ListNode preListNode = null;
+		ListNode nowListNode = head;
+		
+		while(nowListNode != null){
+			ListNode nextListNode = nowListNode.next;   //保存下一个结点
+			nowListNode.next = preListNode;             //当前结点指向前一个结点
+			preListNode = nowListNode;                  //前任结点 到现任节点
+			nowListNode = nextListNode;					//现任节点到下一结点
+		}
+		return preListNode;
+	}
+
+https://blog.csdn.net/jsqfengbao/article/details/47187709
