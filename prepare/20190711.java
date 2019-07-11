@@ -32,3 +32,29 @@ Code Review？大多数公司是没有的，老板也不关心代码的质量如
 androidx 库很多版本已经推出了正式稳定版
 这个的前提是你得更新你的 Android Studio 版本和 gradle 的版本。请注意，这两个的版本都要更新。Android Studio 最低要求是 3.2 的版本，现在正式稳定版本是 3.4.1
 ，gradle 支持 androidx 的最低版本是 3.2.1 ，请注意，一定要升级对应的 gradle 版本。
+
+Window：Window是一个窗口，它是View的容器。Android中的视图以View树的形式组织在一起，而View树必须依附在Window上才能工作。一个Window对应着一个View树。启动Activity时会创建一个Window，显示Dialog时也会创建一Window。因此Activity内部可以有多个Window。由于View的测量、布局、绘制只是在View树内进行的，因此一个Window内View的改动不会影响到另一个Window。Window是一个抽象类，它只有一个实现类PhoneWindow。
+
+DecorView是View树的顶级View，它是FrameLayout的子类。
+
+首先在 Activity 中我们可以重写 onAttachedToWindow() 和 onDetachedFromWindow() 这一对方法。
+
+细心的小伙伴会发现，在 RecyclerView.Adapter 中也会有这么一个 onViewAttachedToWindow() 和 onViewDetachedToWindow()。
+这两个方法在列表布局的时候，用作曝光埋点非常好用，当 Adapter 创建的 View 被窗口分离（即滑动离开了当前窗口界面的）的时候，onViewAttachedToWindow() 会被直接回调，反之，在列表项 View 在被滑动进屏幕的时候，onViewDetachedToWindow() 会立马被调用。
+
+还没看到RxAndroid出3.0
+  
+在HashMap中有两个很重要的参数，容量(Capacity)和负载因子(Load factor)
+  
+对key的hashCode()做hash，然后再计算index;
+如果没碰撞直接放到bucket里；
+如果碰撞了，以链表的形式存在buckets后；
+如果碰撞导致链表过长(大于等于TREEIFY_THRESHOLD)，就把链表转换成红黑树；
+如果节点已经存在就替换old value(保证key的唯一性)
+如果bucket满了(超过load factor*current capacity)，就要resize。
+
+当put时，如果发现目前的bucket占用程度已经超过了Load Factor所希望的比例，那么就会发生resize。在resize的过程，简单的说就是把bucket扩充为2倍，之后重新计算index，把节点再放到新的bucket中。
+
+介绍多线程编程另外一个比较重要的概念：先行发生原则（happens-before）。
+例如操作A先行于操作B发生，那么操作B可以观察到操作A所产生的所有影响，
+程序次序规则：在同一个线程中，按照程序代码顺序，写在前面的操作先行发生与写在后面操作(控制流顺序：分支、循环等)。
