@@ -4,3 +4,7 @@ Android一般的进程优先级划分： 1.前台进程 (Foreground process) 2.�
 那么将导致Activity的内存资源无法回收，造成内存泄漏。正确的做法还是使用静态内部类的方式
 
 对于使用了BraodcastReceiver，ContentObserver，File，Cursor，Stream，Bitmap等资源的使用，应该在Activity销毁时及时关闭或者注销，否则这些资源将不会被回收，造成内存泄漏。
+
+首先实现同一应用内跨进程通信，然后在实现APP间通信。因为AIDL是c/s模式，所以我们先创建一个服务端应用。
+
+AIDL是不支持传递普通的Java对象的，不过支持Parcelable对象，所以我们的消息对象要实现Parcelable。
