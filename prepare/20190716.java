@@ -28,3 +28,13 @@ MVP：Model 通知 Presenter 通知 View， Presenter 切断了 Model 和 View �
 首先，你得明确，你是在做产品，不是做项目。
 其次，架构的前期需求分析与建模非常重要，多思考未来可能的扩展。
 最后，最好有一定的代码规范甚至是洁癖。
+
+View是Android中所有控件的基类，无论是TextView、ImageView还是Button、CheckBox都是继承自View，可以说我们的应用界面就是由各式各样的View组成的。
+
+ViewGroup从名字就可以看出来表示一组View，它可以包含多个View。平时常用的LinearLayout、RelativeLayout、FrameLayout等都是继承自ViewGroup,并且ViewGroup也是继承自View。
+
+EXACTLY模式下，父View为子View测量出所需要的大小，一般对应match_parent属性，强制大小充满父布局和父布局一样大，或者具体数值，比如100dp。
+
+AT_MOST模式下，父View为子View提供一个最大的尺寸大小，子View大小可以任意由自己决定，但是最大不能超过这个尺寸，一般对应wrap_content属性，自适应大小。
+
+Window是一个抽象的窗体的概念，每个Activity初始化默认会创建一个Window，界面上所有的View都会添加到这个Window上。Android中的Window类也是个抽象类，它的实现类是PhoneWindow。
